@@ -1,8 +1,8 @@
 // bubblesort.cn
 
-fun bubblesort(v: Vec<i64>): Vec<i64> {
+fun bubblesort(v: Vec[i64]): Vec[i64] {
     var tmp: i64 = 0;
-    var sortedVector: Vec<i64> = v.copy();
+    var sortedVector: Vec[i64] = v.copy();
 
     for (var i: u64 = 0; i < v.size() -1; i++) {
         for (var j:u64 = 0; j < v.size() -1; j++) {
