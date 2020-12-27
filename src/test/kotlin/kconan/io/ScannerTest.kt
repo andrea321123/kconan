@@ -1,5 +1,5 @@
 // ScannerTest.kt
-// Version 1.0.0
+// Version 1.0.1
 
 package kconan.io
 
@@ -26,7 +26,6 @@ class ScannerTest {
     @Test
     fun factorialScannerTest() {
         var test = readFile("${conanSourcesDirectory}factorial.cn")
-        assertEquals(142, test.length)
         assertEquals(2, countSubstring(test, "factorial"))
         assertEquals(3, countSubstring(test, "result"))
         assertEquals(10, countSubstring(test, "\n"))
@@ -35,7 +34,6 @@ class ScannerTest {
     @Test
     fun bubblesortScannerTest() {
         var test = readFile("${conanSourcesDirectory}bubblesort.cn")
-        assertEquals(558, test.length)
         assertEquals(10, countSubstring(test, "sortedVector"))
         assertEquals(4, countSubstring(test, "i64"))
         assertEquals(2, countSubstring(test, "u64"))
