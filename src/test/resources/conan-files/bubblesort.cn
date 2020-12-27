@@ -1,0 +1,19 @@
+// bubblesort.cn
+
+fun bubblesort(v: Vec<i64>): Vec<i64> {
+    var tmp: i64 = 0;
+    var sortedVector: Vec<i64> = v.copy();
+
+    for (var i: u64 = 0; i < v.size() -1; i++) {
+        for (var j:u64 = 0; j < v.size() -1; j++) {
+            if (sortedVector.at(j) > sortedVector.at(j +1)) {
+                // swap sortedVector.at(j) and sortedVector.at(j +1)
+                tmp = sortedVector.at(j)
+                sortedVector.at(j) = sortedVector.at(j +1);
+                sortedVector.at(j +1) = tmp;
+            }
+        }
+    }
+
+    return sortedVector
+}
