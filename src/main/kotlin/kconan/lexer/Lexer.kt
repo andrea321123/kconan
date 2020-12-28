@@ -1,7 +1,18 @@
 // Lexer.kt
-// Version 1.0.0
+// Version 1.0.1
 
 package kconan.lexer
+
+// Return the index of the first char != ' ' after startIndex
+fun skipSpaces(sourceCode: String, startIndex: Int): Int {
+    var endIndex = startIndex
+
+    while (endIndex < sourceCode.length && sourceCode[endIndex] == ' ') {
+        endIndex++
+    }
+
+    return endIndex
+}
 
 // Return a pair:
 // first: word read starting from [startIndex]
