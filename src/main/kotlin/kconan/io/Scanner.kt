@@ -1,5 +1,5 @@
 // Scanner.kt
-// Version 1.0.0
+// Version 1.0.1
 
 package kconan.io
 
@@ -14,7 +14,8 @@ fun readFile(path: String): String {
     try {
         // read all file
         val inputStream = File(path).inputStream()
-        return inputStream.bufferedReader().use { it.readText() }
+        val sourceCode = inputStream.bufferedReader().use { it.readText() }
+        return sourceCode.replace("\r", "")
     } catch (e: FileNotFoundException) {
         throw Error(ErrorType.INPUT_ERROR, "File not found: $path")
     }
