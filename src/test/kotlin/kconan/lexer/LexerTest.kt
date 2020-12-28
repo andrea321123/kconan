@@ -1,5 +1,5 @@
 // LexerTest.kt
-// Version 1.0.1
+// Version 1.0.2
 
 package kconan.lexer
 
@@ -7,6 +7,18 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class LexerTest {
+    @Test
+    fun readStringTest() {
+        var string = "println(\"First string, \" + \"Second \\string\");"
+        var test = readString(string, 8)
+        assertEquals("First string, ", test.first)
+        assertEquals(24, test.second)
+
+        test = readString(string, 27)
+        assertEquals("Second \\string", test.first)
+        assertEquals(43, test.second)
+    }
+
     @Test
     fun readWordTest() {
         var string = "fun main() { println(\"Hello world\")}"

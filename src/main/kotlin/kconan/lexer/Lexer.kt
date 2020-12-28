@@ -1,7 +1,10 @@
 // Lexer.kt
-// Version 1.0.1
+// Version 1.0.2
 
 package kconan.lexer
+
+import kconan.error.Error
+import kconan.error.ErrorType
 
 // Return the index of the first char != ' ' after startIndex
 fun skipSpaces(sourceCode: String, startIndex: Int): Int {
@@ -12,6 +15,30 @@ fun skipSpaces(sourceCode: String, startIndex: Int): Int {
     }
 
     return endIndex
+}
+
+// Return a pair:
+// first: string read starting from [startIndex] (sourceCode[startIndex] = ")
+// second: index of the first char after closing "
+// string is collected without opening and closing quotes
+fun readString(sourceCode: String, startIndex: Int): Pair<String, Int> {
+    var endIndex = startIndex + 1
+    var string = ""
+    while (endIndex < sourceCode.length) {
+        if (sourceCode[endIndex] == '\\') {
+            string += sourceCode[endIndex++]
+        }
+
+        if (sourceCode[endIndex] == '\"') {
+            return  Pair(string, endIndex +1)
+        }
+
+        string += sourceCode[endIndex]
+        endIndex++
+    }
+
+    // if arrive here, no closing " is found
+    throw Error(ErrorType.COMPILE_ERROR, "no closing double quote")
 }
 
 // Return a pair:
