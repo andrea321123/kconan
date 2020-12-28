@@ -1,5 +1,5 @@
 // CleanSource.kt
-// Version 1.0.2
+// Version 1.0.3
 
 package kconan.lexer
 
@@ -15,7 +15,14 @@ fun uncomment(sourceCode: String): String {
     while (i < newSourceCode.length -1) {
         // we skip strings because strings contains "//"
         if (newSourceCode[i] == '\"') {
-            i = skipString(newSourceCode, i)
+            // if there's no closing ", we finished to uncomment
+            // Error will be handled by the lexer
+            // because it has line and column information
+            try {
+                i = skipString(newSourceCode, i)
+            } catch (e: Error) {
+                return newSourceCode
+            }
         }
         if (newSourceCode[i] == '/' && newSourceCode[i +1] == '/') {
             // remove all text between "//" and "\n" (inclusive)
