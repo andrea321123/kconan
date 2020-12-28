@@ -1,5 +1,5 @@
 // ReadersTest.kt
-// Version 1.0.0
+// Version 1.0.1
 
 package kconan.lexer
 
@@ -7,6 +7,22 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class ReadersTest {
+    @Test
+    fun readCharTest() {
+        var string = "foo(\'a\',\'b\',\'\\n\');"
+        var test = readChar(string, 4)
+        assertEquals("a", test.first)
+        assertEquals(7, test.second)
+
+        test = readChar(string, 8)
+        assertEquals("b", test.first)
+        assertEquals(11, test.second)
+
+        test = readChar(string, 12)
+        assertEquals("\\n", test.first)
+        assertEquals(16, test.second)
+    }
+
     @Test
     fun readStringTest() {
         var string = "println(\"First string, \" + \"Second \\string\");"

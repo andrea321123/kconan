@@ -1,10 +1,26 @@
 // Readers.kt
-// Version 1.0.0
+// Version 1.0.1
 
 package kconan.lexer
 
 import kconan.error.Error
 import kconan.error.ErrorType
+
+// Return a pair:
+// first: char read starting from [startIndex] (sourceCode[startIndex] = ')
+// second: index of the first char after closing '
+// char is collected without opening and closing quotes
+fun readChar(sourceCode: String, startIndex: Int): Pair<String, Int> {
+    var endIndex = startIndex +1
+    var char: String = ""
+
+    if (sourceCode[endIndex] == '\\') {
+        char += '\\'
+        endIndex++
+    }
+
+    return Pair(char + sourceCode[endIndex], endIndex +2)
+}
 
 // Return a pair:
 // first: string read starting from [startIndex] (sourceCode[startIndex] = ")
