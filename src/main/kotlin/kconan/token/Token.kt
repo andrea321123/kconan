@@ -1,5 +1,5 @@
 // Token.kt
-// Version 1.0.0
+// Version 1.0.1
 
 package kconan.token
 
@@ -31,8 +31,8 @@ data class Token(val token: TokenType,
 private val tokenToInfo = mapOf<TokenType, String>(
     TokenType.IF_KEYWORD to "if keyword",
     TokenType.ELSE_KEYWORD to "else keyword",
-    TokenType.WHILE_KEYBOARD to "while keyword",
-    TokenType.FOR_KEYBOARD to "for keyword",
+    TokenType.WHILE_KEYWORD to "while keyword",
+    TokenType.FOR_KEYWORD to "for keyword",
 
     TokenType.RETURN_KEYWORD to "return keyword",
     TokenType.BREAK_KEYWORD to "break keyword",

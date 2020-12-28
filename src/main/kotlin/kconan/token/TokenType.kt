@@ -1,5 +1,5 @@
 // TokenType.kt
-// Version 1.0.0
+// Version 1.0.1
 
 package kconan.token
 
@@ -7,8 +7,8 @@ package kconan.token
 enum class TokenType {
     IF_KEYWORD,
     ELSE_KEYWORD,
-    WHILE_KEYBOARD,
-    FOR_KEYBOARD,
+    WHILE_KEYWORD,
+    FOR_KEYWORD,
 
     RETURN_KEYWORD,
     BREAK_KEYWORD,
