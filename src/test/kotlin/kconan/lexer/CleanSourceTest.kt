@@ -1,5 +1,5 @@
 // CleanSourceTest.kt
-// Version 1.0.1
+// Version 1.0.2
 
 package kconan.lexer
 
@@ -30,26 +30,26 @@ class CleanSourceTest {
     @Test
     fun factorialUncommentTest() {
         val test = uncomment(readFile("${conanSourcesDirectory}factorial.cn"))
-        assertEquals(126, test.length)
+        assertEquals(127, test.length)
         assertEquals(1, countSubstring(test, "factorial"))
-        assertEquals(9, countSubstring(test, "\n"))
+        assertEquals(10, countSubstring(test, "\n"))
         assertEquals(0, countSubstring(test, "//"))
     }
 
     @Test
     fun helloWorldUncommentTest() {
         val test = uncomment(readFile("${conanSourcesDirectory}helloWorld.cn"))
-        assertEquals(60, test.length)
+        assertEquals(65, test.length)
         assertEquals(1, countSubstring(test, "Hello, world!"))
-        assertEquals(3, countSubstring(test, "\n"))
+        assertEquals(8, countSubstring(test, "\n"))
     }
 
     @Test
     fun commentUncommentTest() {
         val test = uncomment(readFile("${conanSourcesDirectory}comment.cn"))
-        assertEquals(51, test.length)
+        assertEquals(55, test.length)
         assertEquals(2, countSubstring(test, "//"))
-        assertEquals(3, countSubstring(test, "\n"))
+        assertEquals(7, countSubstring(test, "\n"))
     }
 
     @Test

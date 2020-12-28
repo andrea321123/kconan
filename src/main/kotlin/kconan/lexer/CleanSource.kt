@@ -1,5 +1,5 @@
 // CleanSource.kt
-// Version 1.0.1
+// Version 1.0.2
 
 package kconan.lexer
 
@@ -25,11 +25,6 @@ fun uncomment(sourceCode: String): String {
             // reach the newline character
             while (endIndex < newSourceCode.length &&
                 newSourceCode[endIndex] != '\n') {
-                endIndex++
-            }
-
-            // if comment is at the end of file, we don't need to add 1 at endIndex
-            if (endIndex != newSourceCode.length) {
                 endIndex++
             }
 
