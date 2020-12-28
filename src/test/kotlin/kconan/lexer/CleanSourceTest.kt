@@ -1,5 +1,5 @@
 // CleanSourceTest.kt
-// Version 1.0.0
+// Version 1.0.1
 
 package kconan.lexer
 
@@ -50,5 +50,17 @@ class CleanSourceTest {
         assertEquals(51, test.length)
         assertEquals(2, countSubstring(test, "//"))
         assertEquals(3, countSubstring(test, "\n"))
+    }
+
+    @Test
+    fun removeNewlinesTest() {
+        var withNewlines = uncomment(readFile("${conanSourcesDirectory}comment.cn"))
+        var test = removeNewlines(withNewlines)
+        assertEquals(48, test.length)
+        assertEquals(0, countSubstring(test, "\n"))
+        withNewlines = uncomment(readFile("${conanSourcesDirectory}helloWorld.cn"))
+        test = removeNewlines(withNewlines)
+        assertEquals(57, test.length)
+        assertEquals(0, countSubstring(test, "\n"))
     }
 }

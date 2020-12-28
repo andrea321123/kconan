@@ -1,5 +1,5 @@
 // CleanSource.kt
-// Version 1.0.0
+// Version 1.0.1
 
 package kconan.lexer
 
@@ -59,4 +59,9 @@ fun skipString(sourceCode: String, startIndex: Int): Int {
 
     // if arrive here, no closing " is found
     throw Error(ErrorType.COMPILE_ERROR, "no closing double quote")
+}
+
+// Remove all "\n'
+fun removeNewlines(sourceCode: String): String {
+    return sourceCode.replace("\n", "")
 }
