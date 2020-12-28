@@ -1,0 +1,9 @@
+// helloWorld.cn
+// Simple program that prints "Hello, world!" on the console
+
+fun main() {        // main is the first function to be called
+    // println prints the message and a newline ("\n")
+    println("Hello, world!");   // instructions end with a semicolon
+}
+
+// comment at the end of the source file
