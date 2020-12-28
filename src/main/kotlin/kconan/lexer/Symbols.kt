@@ -1,9 +1,13 @@
 // Symbols.kt
-// Version 1.0.1
+// Version 1.0.2
 
 package kconan.lexer
 
 import kconan.token.TokenType
+
+// set of digits
+val digits = setOf(
+    '0','1','2','3','4','5','6','7','8','9')
 
 // set of all valid first symbols of a word
 val validFirstLetters = setOf(
@@ -16,8 +20,7 @@ val validFirstLetters = setOf(
     '_')
 
 // set of all valid symbols of a word
-val validLetters = validFirstLetters + setOf(
-    '0','1','2','3','4','5','6','7','8','9',)
+val validLetters = validFirstLetters + digits
 
 // set of all symbols used (in operators, conditionals, brackets...)
 val symbolsList = setOf(
