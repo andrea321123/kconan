@@ -1,0 +1,8 @@
+// comment.cn
+// single line comment
+
+fun main() {    // comment on same line of code
+    print("// Hello Conan //") // double slash inside a string
+}
+
+// comment at end of file
