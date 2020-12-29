@@ -1,12 +1,34 @@
 // LexerTest.kt
-// Version 1.0.3
+// Version 1.0.4
 
 package kconan.lexer
+
+import kconan.error.Error
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class LexerTest {
+    @Test
+    fun getSymbolsTokensTest() {
+        var string = "(){}++--++="
+        var test = getSymbolsTokens(string, 1, 1)
+        assertEquals(8, test.size)
+        assertEquals("(", test[0].value)
+        assertEquals(5, test[4].line)
+        assertEquals("--", test[5].value)
+        assertEquals(1, test[6].column)
+        assertEquals("=", test[7].value)
+
+        string = "()+=($)"
+        try {
+            test = getSymbolsTokens(string, 1, 1)
+            assert(false)
+        } catch (e: Error) {
+            assert(e.toString().contains("$"))
+        }
+    }
+
     @Test
     fun skipSpacesTest() {
         var string = "fun main() {     var foo = 5;     var bar = 3;    }      "
