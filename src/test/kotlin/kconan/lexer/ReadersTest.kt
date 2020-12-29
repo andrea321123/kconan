@@ -1,12 +1,38 @@
 // ReadersTest.kt
-// Version 1.0.1
+// Version 1.0.2
 
 package kconan.lexer
+
+import kconan.token.TokenType
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class ReadersTest {
+    @Test
+    fun readNumberTest() {
+        var string = "val foo = 15+52.435-var+17."
+        var test = readNumber(string, 10)
+        assertEquals("15", test.first)
+        assertEquals(12, test.second)
+        assertEquals(TokenType.INTEGER_CONSTANT, test.third)
+
+        test = readNumber(string, 13)
+        assertEquals("52.435", test.first)
+        assertEquals(19, test.second)
+        assertEquals(TokenType.FLOAT_CONSTANT, test.third)
+
+        test = readNumber(string, 13)
+        assertEquals("52.435", test.first)
+        assertEquals(19, test.second)
+        assertEquals(TokenType.FLOAT_CONSTANT, test.third)
+
+        test = readNumber(string, 24)
+        assertEquals("17", test.first)
+        assertEquals(26, test.second)
+        assertEquals(TokenType.INTEGER_CONSTANT, test.third)
+    }
+
     @Test
     fun readCharTest() {
         var string = "foo(\'a\',\'b\',\'\\n\');"

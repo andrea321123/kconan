@@ -1,10 +1,56 @@
 // Readers.kt
-// Version 1.0.1
+// Version 1.0.2
 
 package kconan.lexer
 
 import kconan.error.Error
 import kconan.error.ErrorType
+import kconan.token.TokenType
+
+// Return a triple:
+// first: number read starting from [startIndex]
+// second: index of the first char after the number
+// third: TokenType based on the number (INTEGER_CONSTANT or FLOAT_CONSTANT)
+fun readNumber(sourceCode: String, startIndex: Int):
+        Triple<String, Int, TokenType> {
+    // kconan 1.0 supports only decimal numbers,
+    // however Conan language itself supports also binary, octal and hex numbers
+    var endIndex = startIndex +1;
+    var number = "" + sourceCode[startIndex]
+    var decimal = false
+
+    while (endIndex < sourceCode.length &&
+            (digits.contains(sourceCode[endIndex]) ||
+            sourceCode[endIndex] == '.')) {
+        if (sourceCode[endIndex] == '.') {
+            // if we already found a ., the number finishes
+            if (decimal) {
+                break
+            }
+            else {
+                decimal = true
+            }
+        }
+
+        number += sourceCode[endIndex++]
+    }
+
+    // if '.' is last char of the number, we remove the '.'
+    if (number[number.length -1] == '.') {
+        decimal = false
+        number = number.dropLast(1)
+        endIndex--
+    }
+
+    val token = if (decimal) {
+        TokenType.FLOAT_CONSTANT
+    }
+    else {
+        TokenType.INTEGER_CONSTANT
+    }
+
+    return Triple(number, endIndex, token)
+}
 
 // Return a pair:
 // first: char read starting from [startIndex] (sourceCode[startIndex] = ')
