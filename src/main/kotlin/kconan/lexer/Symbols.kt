@@ -1,5 +1,5 @@
 // Symbols.kt
-// Version 1.0.2
+// Version 1.0.3
 
 package kconan.lexer
 
@@ -39,7 +39,7 @@ val size1Symbols = setOf(
 // set of all symbols of length 1
 val size2Symbols = setOf(
     "==","!=",">=","<=",
-    "++","--","+=","-=","*=","%=")
+    "++","--","+=","-=","*=","/=","%=")
 
 // set all of words used by conan (not usable for identifiers)
 val conanWords = setOf(
