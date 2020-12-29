@@ -1,13 +1,13 @@
 // Token.kt
-// Version 1.0.1
+// Version 1.0.2
 
 package kconan.token
 
 // Data class containing information about a token
 data class Token(val token: TokenType,
                  val value: String,
-                 val line: Long,
-                 val column: Long) {
+                 val line: Int,
+                 val column: Int) {
     override fun toString(): String {
         var returnString = "$line: $column: ${tokenToInfo[token]}"
 

@@ -1,5 +1,5 @@
 // Error.kt
-// Version 1.0.0
+// Version 1.0.1
 
 package kconan.error
 
@@ -8,18 +8,18 @@ package kconan.error
 // kconan: [error type]: ([line]: [column]: )[message]
 class Error(private val errorType: ErrorType,
             private val info: String): Exception() {
-    private var line: Long = 0
-    private var column: Long = 0
+    private var line: Int = 0
+    private var column: Int = 0
 
     constructor(errorType: ErrorType,
                 info: String,
-                line: Long): this(errorType, info) {
+                line: Int): this(errorType, info) {
         this.line = line
     }
     constructor(errorType: ErrorType,
                 info: String,
-                line: Long,
-                column: Long): this(errorType, info, line) {
+                line: Int,
+                column: Int): this(errorType, info, line) {
         this.column = column
     }
 
@@ -34,11 +34,11 @@ class Error(private val errorType: ErrorType,
         }
         returnString += errorTypeString
 
-        if (line != 0L) {
+        if (line != 0) {
             returnString += "$line: "
         }
 
-        if (column != 0L) {
+        if (column != 0) {
             returnString += "$column: "
         }
 
