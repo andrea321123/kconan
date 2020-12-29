@@ -1,9 +1,11 @@
 // ReadersTest.kt
-// Version 1.0.2
+// Version 1.0.3
 
 package kconan.lexer
 
 import kconan.token.TokenType
+
+import kconan.error.Error
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -47,6 +49,14 @@ class ReadersTest {
         test = readChar(string, 12)
         assertEquals("\\n", test.first)
         assertEquals(16, test.second)
+
+        string = "\'a  b  \'"
+        try {
+            test = readChar(string, 0)
+            assert(false)
+        } catch (e: Error) {
+            assert(e.toString().contains("Expected ' symbol"))
+        }
     }
 
     @Test

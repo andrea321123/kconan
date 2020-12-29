@@ -1,5 +1,5 @@
 // Readers.kt
-// Version 1.0.2
+// Version 1.0.3
 
 package kconan.lexer
 
@@ -60,12 +60,23 @@ fun readChar(sourceCode: String, startIndex: Int): Pair<String, Int> {
     var endIndex = startIndex +1
     var char: String = ""
 
-    if (sourceCode[endIndex] == '\\') {
-        char += '\\'
-        endIndex++
+    try {
+        if (sourceCode[endIndex] == '\\') {
+            char += '\\'
+            endIndex++
+        }
+
+        char += sourceCode[endIndex++]
+
+    } catch (e: StringIndexOutOfBoundsException) {
+        throw Error(ErrorType.COMPILE_ERROR, "Expected char")
     }
 
-    return Pair(char + sourceCode[endIndex], endIndex +2)
+    if (endIndex >= sourceCode.length || sourceCode[endIndex] != '\'') {
+        throw Error(ErrorType.COMPILE_ERROR, "Expected ' symbol")
+    }
+
+    return Pair(char, endIndex +1)
 }
 
 // Return a pair:
