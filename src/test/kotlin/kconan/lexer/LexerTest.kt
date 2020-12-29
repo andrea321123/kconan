@@ -1,5 +1,5 @@
 // LexerTest.kt
-// Version 1.0.4
+// Version 1.0.5
 
 package kconan.lexer
 
@@ -15,9 +15,9 @@ class LexerTest {
         var test = getSymbolsTokens(string, 1, 1)
         assertEquals(8, test.size)
         assertEquals("(", test[0].value)
-        assertEquals(5, test[4].line)
+        assertEquals(5, test[4].column)
         assertEquals("--", test[5].value)
-        assertEquals(1, test[6].column)
+        assertEquals(1, test[6].line)
         assertEquals("=", test[7].value)
 
         string = "()+=($)"

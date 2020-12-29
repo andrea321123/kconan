@@ -1,5 +1,5 @@
 // Lexer.kt
-// Version 1.0.4
+// Version 1.0.5
 
 package kconan.lexer
 
@@ -35,7 +35,7 @@ fun getSymbolsTokens(symbolsString: String, line: Int, column: Int):
         val otherChars = symbolsString.substring(2, symbolsString.length)
         val list = ArrayList<Token>()
         list.add(Token(symbolsToToken[firstTwo]!!, firstTwo, line, column))
-        list.addAll(getSymbolsTokens(otherChars, line +2, column))
+        list.addAll(getSymbolsTokens(otherChars, line, column +2))
         return list
     }
     else {
@@ -44,7 +44,7 @@ fun getSymbolsTokens(symbolsString: String, line: Int, column: Int):
         val firstChar = symbolsString.substring(0, 1)
         val otherChars = symbolsString.substring(1, symbolsString.length)
         val list = getSymbolsTokens(firstChar, line, column)
-        list.addAll(getSymbolsTokens(otherChars, line +1, column))
+        list.addAll(getSymbolsTokens(otherChars, line, column +1))
         return list
     }
 }
