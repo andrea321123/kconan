@@ -1,15 +1,15 @@
 // Error.kt
-// Version 1.0.1
+// Version 1.0.2
 
 package kconan.error
 
 // Represent an error message from kconan
 // error format:
 // kconan: [error type]: ([line]: [column]: )[message]
-class Error(private val errorType: ErrorType,
-            private val info: String): Exception() {
-    private var line: Int = 0
-    private var column: Int = 0
+class Error(val errorType: ErrorType,
+            val info: String): Exception() {
+    var line: Int = 0
+    var column: Int = 0
 
     constructor(errorType: ErrorType,
                 info: String,
