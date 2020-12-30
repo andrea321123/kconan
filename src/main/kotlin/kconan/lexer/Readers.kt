@@ -1,5 +1,5 @@
 // Readers.kt
-// Version 1.0.3
+// Version 1.0.4
 
 package kconan.lexer
 
@@ -64,6 +64,10 @@ fun readChar(sourceCode: String, startIndex: Int): Pair<String, Int> {
         if (sourceCode[endIndex] == '\\') {
             char += '\\'
             endIndex++
+        }
+        // Conan doesn't support empty char
+        else if (sourceCode[endIndex] == '\'') {
+            throw Error(ErrorType.COMPILE_ERROR, "Expected char")
         }
 
         char += sourceCode[endIndex++]

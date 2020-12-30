@@ -1,5 +1,5 @@
 // ReadersTest.kt
-// Version 1.0.3
+// Version 1.0.4
 
 package kconan.lexer
 
@@ -56,6 +56,30 @@ class ReadersTest {
             assert(false)
         } catch (e: Error) {
             assert(e.toString().contains("Expected ' symbol"))
+        }
+
+        string = "var a = '"
+        try {
+            test = readChar(string, 8)
+            assert(false)
+        } catch (e: Error) {
+            assert(e.toString().contains("Expected char"))
+        }
+
+        string = "var a = 'b"
+        try {
+            test = readChar(string, 8)
+            assert(false)
+        } catch (e: Error) {
+            assert(e.toString().contains("Expected ' symbol"))
+        }
+
+        string = "var a = '';"
+        try {
+            test = readChar(string, 8)
+            assert(false)
+        } catch (e: Error) {
+            assert(e.toString().contains("Expected char"))
         }
     }
 
