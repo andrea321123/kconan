@@ -1,12 +1,12 @@
 // TokenStream.kt
-// Version 1.0.0
+// Version 1.0.1
 
 package kconan.lexer.stream
 
 import kconan.token.Token
 
 // Stream of tokens; tokens can be obtained using next() method
-class TokenStream(val list: ArrayList<Token>) {
+class TokenStream(private val list: ArrayList<Token>) {
     val size = list.size
     var index = 0
 
