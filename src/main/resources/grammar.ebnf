@@ -1,0 +1,41 @@
+(*
+kconan 1.0 doesn't support
+    - classes
+    - type inference
+    - declaration and assignment on same line
+    - logical and, or, not
+    - bitwise operators
+*)
+
+(*
+Version 1.0.0
+It doesn't support:
+    - char variables
+    - functions
+    - parenthesis
+*)
+
+program = var_declaration;
+program = program;
+program = program var_declaration;
+
+var_declaration = VAR ?ID? COLON numeric_type ASSIGN exp;
+
+numeric_type = U8 | I8 | U16 | I16 | U32 | I32 | U64 | I64 | F32 | F64;
+
+exp = ?ID?;
+exp = number;
+exp = exp operator exp;
+
+number = ?INT? | ?FLOAT?;
+
+operator = ADDITION | SUBTRACTION | MULTIPLICATION | DIVISION;
+
+
+VAR = "var";
+COLON = ":";
+ASSIGN = "=";
+ADDITION = "+";
+SUBTRACTION = "-";
+MULTIPLICATION = "*";
+DIVISION = "/";
