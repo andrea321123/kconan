@@ -1,5 +1,5 @@
 // TreeTokenType.kt
-// Version 1.0.1
+// Version 1.0.2
 
 package kconan.parser
 
@@ -18,5 +18,16 @@ enum class TreeTokenType {
     ADDITION,
     SUBTRACTION,
     MULTIPLICATION,
-    DIVISION
+    DIVISION,
+
+    I8_TYPE,
+    U8_TYPE,
+    I16_TYPE,
+    U16_TYPE,
+    I32_TYPE,
+    U32_TYPE,
+    I64_TYPE,
+    U64_TYPE,
+    F32_TYPE,
+    F64_TYPE,
 }

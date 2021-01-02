@@ -1,5 +1,5 @@
 // Token.kt
-// Version 1.0.0
+// Version 1.0.1
 
 package kconan.parser
 
@@ -38,4 +38,15 @@ private val treeTokenToInfo = mapOf(
 
     TreeTokenType.IDENTIFIER to "identifier",
     TreeTokenType.INTEGER_CONSTANT to "integer constant",
-    TreeTokenType.FLOAT_CONSTANT to "float constant")
+    TreeTokenType.FLOAT_CONSTANT to "float constant",
+
+    TreeTokenType.I8_TYPE to "i8 type",
+    TreeTokenType.U8_TYPE to "u8 type",
+    TreeTokenType.I16_TYPE to "i16 type",
+    TreeTokenType.U16_TYPE to "u16 type",
+    TreeTokenType.I32_TYPE to "i32 type",
+    TreeTokenType.U32_TYPE to "u32 type",
+    TreeTokenType.I64_TYPE to "i64 type",
+    TreeTokenType.U64_TYPE to "u64 type",
+    TreeTokenType.F32_TYPE to "f32 type",
+    TreeTokenType.F64_TYPE to "f64 type")
