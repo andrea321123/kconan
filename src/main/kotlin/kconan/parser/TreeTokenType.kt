@@ -1,11 +1,11 @@
 // TreeTokenType.kt
-// Version 1.0.2
+// Version 1.0.3
 
 package kconan.parser
 
 enum class TreeTokenType {
     PROGRAM,
-    VAR_DECLARATION,
+    VAR_INIT,
     NUMERIC_TYPE,
     EXP,
     NUMBER,
