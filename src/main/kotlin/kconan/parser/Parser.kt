@@ -1,5 +1,5 @@
 // Parser.kt
-// Version 1.0.2
+// Version 1.0.3
 
 package kconan.parser
 
@@ -74,8 +74,24 @@ class Parser (val list: ArrayList<Token>) {
         return ParsingResult(true, head, i)
     }
 
+    // exp = ?ID?;
+    // exp = number;
     fun parseExp(i: Int): ParsingResult {
-        // TODO: implement method
+        var i = i
+        val head = Ast(TreeToken(TreeTokenType.EXP, "",
+                list[i].line, list[i].column))
+
+        if (list[i].token == TokenType.IDENTIFIER) {
+            head.add(Ast(treeFromIndex(TreeTokenType.IDENTIFIER, i)))
+            return ParsingResult(true, head, ++i)
+        }
+        if (list[i].token == TokenType.INTEGER_CONSTANT ||
+                list[i].token == TokenType.FLOAT_CONSTANT) {
+            head.add(Ast(treeFromIndex(tokenToTreeToken[list[i].token]!!, i)))
+            return ParsingResult(true, head, ++i)
+        }
+
+        return ParsingResult(false, head, i)
     }
 
     // number = ?INT? | ?FLOAT?;
