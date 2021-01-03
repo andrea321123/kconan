@@ -1,5 +1,5 @@
 // TokenTypeGroups.kt
-// Version 1.0.0
+// Version 1.0.1
 
 package kconan.token
 
@@ -15,3 +15,10 @@ val types = setOf(
     TokenType.U64_TYPE,
     TokenType.F32_TYPE,
     TokenType.F64_TYPE)
+
+val operators = setOf(
+    TokenType.ADDITION,
+    TokenType.SUBTRACTION,
+    TokenType.MULTIPLICATION,
+    TokenType.DIVISION,
+    TokenType.REMAINDER)
