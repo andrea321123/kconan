@@ -7,7 +7,7 @@ kconan 1.0 doesn't support
 *)
 
 (*
-Version 1.0.4
+Version 1.0.5
 It doesn't support:
     - char variables
     - functions
@@ -15,7 +15,7 @@ It doesn't support:
 *)
 
 program = var_init;
-program = program var_init;
+program = var_init program;
 
 var_init = VAR ?ID? COLON numeric_type ASSIGN exp;;
 
