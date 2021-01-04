@@ -1,13 +1,13 @@
 // Token.kt
 // Version 1.0.2
 
-package kconan.parser
+package kconan.parser.token
 
 // Data class containing information about a tree token
 data class TreeToken(val token: TreeTokenType,
-                 val value: String,
-                 val line: Int,
-                 val column: Int) {
+                     val value: String,
+                     val line: Int,
+                     val column: Int) {
     override fun toString(): String {
         var returnString = "$line: $column: ${treeTokenToInfo[token]}"
 
@@ -15,7 +15,8 @@ data class TreeToken(val token: TreeTokenType,
         // value or the identifier (are contained in value)
         if (token == TreeTokenType.INTEGER_CONSTANT ||
                 token == TreeTokenType.FLOAT_CONSTANT ||
-                token == TreeTokenType.IDENTIFIER) {
+                token == TreeTokenType.IDENTIFIER
+        ) {
             returnString += ": $value"
         }
 

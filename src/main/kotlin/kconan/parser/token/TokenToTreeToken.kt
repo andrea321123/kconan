@@ -1,7 +1,7 @@
 // TokenToTreeToken.kt
 // Version 1.0.2
 
-package kconan.parser
+package kconan.parser.token
 
 import kconan.token.TokenType
 

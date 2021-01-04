@@ -5,6 +5,9 @@ package kconan.parser
 
 import kconan.error.Error
 import kconan.error.ErrorType
+import kconan.parser.token.TreeToken
+import kconan.parser.token.TreeTokenType
+import kconan.parser.token.tokenToTreeToken
 
 import kconan.token.Token
 import kconan.token.TokenType
@@ -14,8 +17,11 @@ class Parser (val list: ArrayList<Token>) {
     // program = var_init;
     fun parseProgram(i: Int): ParsingResult {
         var i = i
-        val head = Ast(TreeToken(TreeTokenType.PROGRAM,
-            "", list[i].line, list[i].column))
+        val head = Ast(
+            TreeToken(
+                TreeTokenType.PROGRAM,
+            "", list[i].line, list[i].column)
+        )
 
         var result = parseVarInit(i)
         if (!result.result) {
@@ -28,8 +34,11 @@ class Parser (val list: ArrayList<Token>) {
     // var_init = VAR ?ID? COLON numeric_type ASSIGN exp;;
     fun parseVarInit(i: Int): ParsingResult {
         var i = i
-        val head = Ast(TreeToken(TreeTokenType.VAR_INIT,
-            "", list[i].line, list[i].column))
+        val head = Ast(
+            TreeToken(
+                TreeTokenType.VAR_INIT,
+            "", list[i].line, list[i].column)
+        )
 
         if (list[i++].token != TokenType.VAR_KEYWORD) {
             return ParsingResult(false, head, --i)
@@ -65,8 +74,11 @@ class Parser (val list: ArrayList<Token>) {
     // exp = number;
     fun parseExp(i: Int): ParsingResult {
         var i = i
-        val head = Ast(TreeToken(TreeTokenType.EXP, "",
-                list[i].line, list[i].column))
+        val head = Ast(
+            TreeToken(
+                TreeTokenType.EXP, "",
+                list[i].line, list[i].column)
+        )
 
         if (list[i].token == TokenType.IDENTIFIER) {
             head.add(Ast(treeFromIndex(TreeTokenType.IDENTIFIER, i)))
@@ -83,8 +95,11 @@ class Parser (val list: ArrayList<Token>) {
 
     // number = ?INT? | ?FLOAT?;
     fun parseNumber(i: Int): ParsingResult {
-        val head = Ast(TreeToken(TreeTokenType.NUMBER,
-            "", list[i].line, list[i].column))
+        val head = Ast(
+            TreeToken(
+                TreeTokenType.NUMBER,
+            "", list[i].line, list[i].column)
+        )
 
         if (list[i].token == TokenType.INTEGER_CONSTANT ||
                 list[i].token == TokenType.FLOAT_CONSTANT) {
@@ -97,8 +112,11 @@ class Parser (val list: ArrayList<Token>) {
 
     // operator = ADDITION | SUBTRACTION | MULTIPLICATION | DIVISION;
     fun parseOperator(i: Int): ParsingResult {
-        val head = Ast(TreeToken(TreeTokenType.OPERATOR, "",
-                list[i].line, list[i].column))
+        val head = Ast(
+            TreeToken(
+                TreeTokenType.OPERATOR, "",
+                list[i].line, list[i].column)
+        )
 
         if (operators.contains(list[i].token)) {
             head.add(Ast(treeFromIndex(tokenToTreeToken[list[i].token]!!, i)))

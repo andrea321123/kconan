@@ -3,6 +3,8 @@
 
 package kconan.parser
 
+import kconan.parser.token.TreeToken
+
 // Implement an Abstract syntax tree
 class Ast(val head: TreeToken) {
     val children: ArrayList<Ast> = ArrayList()

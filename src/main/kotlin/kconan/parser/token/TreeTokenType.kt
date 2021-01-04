@@ -1,7 +1,7 @@
 // TreeTokenType.kt
 // Version 1.0.3
 
-package kconan.parser
+package kconan.parser.token
 
 enum class TreeTokenType {
     PROGRAM,

@@ -4,6 +4,7 @@
 package kconan.parser
 
 import kconan.lexer.doLexing
+import kconan.parser.token.TreeTokenType
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -30,11 +31,13 @@ class ParserTest {
     @Test
     fun parseOperatorTest() {
         var test = Parser(doLexing("var a: u64 = 3 * 5;"))
-        assertEquals(TreeTokenType.MULTIPLICATION,
+        assertEquals(
+            TreeTokenType.MULTIPLICATION,
             test.parseOperator(6).tree.children[0].head.token)
 
         test = Parser(doLexing("var a: u64 = 3 / 5;"))
-        assertEquals(TreeTokenType.DIVISION,
+        assertEquals(
+            TreeTokenType.DIVISION,
             test.parseOperator(6).tree.children[0].head.token)
     }
 
