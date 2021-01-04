@@ -1,5 +1,5 @@
 // Parser.kt
-// Version 1.0.3
+// Version 1.0.4
 
 package kconan.parser
 
@@ -12,29 +12,16 @@ import kconan.token.*
 
 class Parser (val list: ArrayList<Token>) {
     // program = var_init;
-    // program = var_init program;
     fun parseProgram(i: Int): ParsingResult {
         var i = i
-        var firstLoop = true
         val head = Ast(TreeToken(TreeTokenType.PROGRAM,
             "", list[i].line, list[i].column))
 
-        // first child is a var initialization
         var result = parseVarInit(i)
         if (!result.result) {
             return ParsingResult(false, head, result.index)
         }
-        head.add(Ast(treeFromIndex(TreeTokenType.VAR_INIT, i)))
-
-        i = result.index
-
-        // second child is a program
-        result = parseProgram(i)
-        if (result.result) {
-            head.add(Ast(treeFromIndex(TreeTokenType.PROGRAM, i)))
-            i = result.index
-        }
-
+        head.add(result.tree)
         return ParsingResult(true, head, i)
     }
 
