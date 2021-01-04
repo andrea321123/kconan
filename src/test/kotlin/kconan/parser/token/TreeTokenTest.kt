@@ -1,7 +1,7 @@
 // TreeTokenTest.kt
 // Version 1.0.0
 
-package kconan.parser
+package kconan.parser.token
 
 import kconan.parser.token.TreeToken
 import kconan.parser.token.TreeTokenType
