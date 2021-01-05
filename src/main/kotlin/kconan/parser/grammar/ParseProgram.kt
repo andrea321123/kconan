@@ -1,5 +1,5 @@
 // ParseProgram.kt
-// Version 1.0.1
+// Version 1.0.2
 
 package kconan.parser.grammar
 
@@ -12,10 +12,11 @@ import kconan.token.Token
 import kconan.error.Error
 import kconan.error.ErrorType
 
+import java.lang.IndexOutOfBoundsException
+
 // program = var_init;
 // program = var_init program;
 fun parseProgram(i: Int, list: ArrayList<Token>): ParsingResult {
-    // TODO: Handle out of bounds exception
     var i = i
     val head = Ast(
         TreeToken(
@@ -24,7 +25,15 @@ fun parseProgram(i: Int, list: ArrayList<Token>): ParsingResult {
     )
 
     // first child must be var init
-    var result = parseVarInit(i, list)
+    var result: ParsingResult
+    try {
+        result = parseVarInit(i, list)
+    }
+    catch (e: IndexOutOfBoundsException) {
+        throw Error(ErrorType.COMPILE_ERROR, "Expected var init",
+        list[i].line, list[i].column)
+    }
+
     if (!result.result) {
         throw Error(
             ErrorType.COMPILE_ERROR, "Expected var init",
