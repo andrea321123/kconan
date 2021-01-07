@@ -1,5 +1,5 @@
 // Token.kt
-// Version 1.0.2
+// Version 1.0.3
 
 package kconan.parser.token
 
@@ -31,6 +31,8 @@ private val treeTokenToInfo = mapOf(
     TreeTokenType.EXP to "expression",
     TreeTokenType.NUMBER to "number",
     TreeTokenType.OPERATOR to "operator",
+
+    TreeTokenType.VAR_ASSIGN to "var assign",
 
     TreeTokenType.ADDITION to "addition",
     TreeTokenType.SUBTRACTION to "subtraction",

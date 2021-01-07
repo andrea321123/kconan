@@ -7,10 +7,9 @@ kconan 1.0 doesn't support
 *)
 
 (*
-Version 1.0.8
+Version 1.0.9
 It doesn't support:
     - char variables
-    - functions
     - parenthesis
 *)
 
@@ -19,7 +18,13 @@ program = var_init program;
 
 var_init = VAR ?ID? COLON numeric_type ASSIGN exp;;
 
+fun_declaration = FUN ?ID? COLON numeric_type OPEN_CURLY_BRACKET statement CLOSE_CURLY_BRACKET;
+
 numeric_type = U8 | I8 | U16 | I16 | U32 | I32 | U64 | I64 | F32 | F64;
+
+statement = var_assign;
+
+var_assign = ?ID? ASSIGN exp;;
 
 exp = ?ID?;
 exp = number;
@@ -36,3 +41,6 @@ ADDITION = "+";
 SUBTRACTION = "-";
 MULTIPLICATION = "*";
 DIVISION = "/";
+FUN = "fun";
+OPEN_CURLY_BRACKET = "{"
+CLOSE_CURLY_BRACKET = "}"
