@@ -1,5 +1,5 @@
 // ParseVarAssignTest.kt
-// Version 1.0.0
+// Version 1.0.1
 
 package kconan.parser.grammar
 
@@ -20,7 +20,7 @@ class ParseVarAssignTest {
         assertEquals("45.3", test.tree.children[1].children[0].head.value)
 
         try {
-            parseVarAssign(0, doLexing(varAssignSource))
+            parseVarAssign(0, doLexing("a = : 45.3;"))
             assert(false)
         } catch (e: Error) {
             assert(e.toString().contains("expression"))
