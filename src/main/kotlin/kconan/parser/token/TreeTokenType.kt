@@ -1,5 +1,5 @@
 // TreeTokenType.kt
-// Version 1.0.6
+// Version 1.0.7
 
 package kconan.parser.token
 
@@ -14,6 +14,8 @@ enum class TreeTokenType {
     VAR_ASSIGN,
     STATEMENT,
     FUNCTION,
+    PARAMETER,
+    PARAMETERS,
 
     IDENTIFIER,
     INTEGER_CONSTANT,
