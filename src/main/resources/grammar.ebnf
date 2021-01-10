@@ -16,11 +16,16 @@ It doesn't support:
 program = var_init;
 program = var_init program;
 
-var_init = VAR ?ID? COLON numeric_type ASSIGN exp;;
+var_init = VAR ?ID? COLON type ASSIGN exp;;
 
-fun_declaration = FUN ?ID? OPEN_PARENTHESIS CLOSE_PARENTHESIS COLON numeric_type OPEN_CURLY_BRACKET statement CLOSE_CURLY_BRACKET;
+fun_declaration = FUN ?ID? OPEN_PARENTHESIS parameters CLOSE_PARENTHESIS COLON type OPEN_CURLY_BRACKET statement CLOSE_CURLY_BRACKET;
 
-numeric_type = U8 | I8 | U16 | I16 | U32 | I32 | U64 | I64 | F32 | F64;
+parameters = {parameter COMMA} parameter
+parameters = ?EMPTY?
+
+parameter = ?ID? COLON numeric_type
+
+type = U8 | I8 | U16 | I16 | U32 | I32 | U64 | I64 | F32 | F64;
 
 statement = var_assign;
 

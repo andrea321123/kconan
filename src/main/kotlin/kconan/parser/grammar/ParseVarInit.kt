@@ -13,7 +13,7 @@ import kconan.parser.token.tokenToTreeToken
 import kconan.token.Token
 import kconan.token.TokenType
 
-// var_init = VAR ?ID? COLON numeric_type ASSIGN exp;;
+// var_init = VAR ?ID? COLON type ASSIGN exp;;
 fun parseVarInit(i: Int, list: ArrayList<Token>): ParsingResult {
     var i = i
     val head = Ast(

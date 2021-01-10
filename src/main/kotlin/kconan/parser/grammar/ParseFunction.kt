@@ -10,7 +10,7 @@ import kconan.parser.token.tokenToTreeToken
 import kconan.token.Token
 import kconan.token.TokenType
 
-// fun_declaration = FUN ?ID? COLON numeric_type OPEN_PARENTHESIS CLOSE_PARENTHESIS OPEN_CURLY_BRACKET statement CLOSE_CURLY_BRACKET;
+// fun_declaration = FUN ?ID? COLON type OPEN_PARENTHESIS CLOSE_PARENTHESIS OPEN_CURLY_BRACKET statement CLOSE_CURLY_BRACKET;
 fun parseFunction(i: Int, list: ArrayList<Token>): ParsingResult {
     var i = i
     val head = Ast(
