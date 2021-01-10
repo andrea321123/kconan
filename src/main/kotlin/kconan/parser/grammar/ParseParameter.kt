@@ -1,5 +1,5 @@
 // ParseParameter.kt
-// Version 1.0.0
+// Version 1.0.1
 
 package kconan.parser.grammar
 
@@ -15,7 +15,7 @@ import kconan.token.TokenType
 fun parseParameter(i: Int, list: ArrayList<Token>): ParsingResult {
     val head = Ast(
         TreeToken(
-            TreeTokenType.OPERATOR, "",
+            TreeTokenType.PARAMETER, "",
             list[i].line, list[i].column)
     )
     var i = i
