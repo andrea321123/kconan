@@ -1,5 +1,5 @@
 // parseFunctionTest.kt
-// Version 1.0.0
+// Version 1.0.1
 
 package kconan.parser.grammar
 
@@ -25,5 +25,13 @@ class ParseFunctionTest {
         } catch(e: Error) {
             assert(e.toString().contains("type declaration"))
         }
+    }
+
+    @Test
+    fun parseFunction2() {
+        val source = "fun foo(a:i8, b: i8): f32 { a = 32; }"
+        val test = parseFunction(0, doLexing(source))
+
+        assertEquals(15, test.tree.size())
     }
 }

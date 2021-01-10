@@ -1,3 +1,6 @@
+// ParseFunction.kt
+// Version 1.0.1
+
 package kconan.parser.grammar
 
 import kconan.error.Error
@@ -10,7 +13,7 @@ import kconan.parser.token.tokenToTreeToken
 import kconan.token.Token
 import kconan.token.TokenType
 
-// fun_declaration = FUN ?ID? COLON type OPEN_PARENTHESIS CLOSE_PARENTHESIS OPEN_CURLY_BRACKET statement CLOSE_CURLY_BRACKET;
+// fun_declaration = FUN ?ID? COLON type OPEN_PARENTHESIS parameters CLOSE_PARENTHESIS OPEN_CURLY_BRACKET statement CLOSE_CURLY_BRACKET;
 fun parseFunction(i: Int, list: ArrayList<Token>): ParsingResult {
     var i = i
     val head = Ast(
@@ -28,7 +31,14 @@ fun parseFunction(i: Int, list: ArrayList<Token>): ParsingResult {
 
     expect("Expected '(' symbol", TokenType.OPENING_PARENTHESIS, i++, list)
 
-    // TODO: add parameters
+    // second child is parameters
+    var result = parseParameters(i, list)
+    if (!result.result) {
+        throw Error(ErrorType.COMPILE_ERROR, "Expected parameters",
+        list[i].line, list[i].column)
+    }
+    i = result.index
+    head.add(result.tree)
 
     expect("Expected ')' symbol", TokenType.CLOSING_PARENTHESIS, i++, list)
 
@@ -41,7 +51,7 @@ fun parseFunction(i: Int, list: ArrayList<Token>): ParsingResult {
     expect("Expected '{' symbol", TokenType.OPENING_CURLY_BRACKET, i++, list)
 
     // fourth type is statement
-    val result = parseStatement(i, list)
+    result = parseStatement(i, list)
     if (!result.result) {
         throw Error (ErrorType.COMPILE_ERROR,
             "Expected statement", list[i].line, list[i].column)
