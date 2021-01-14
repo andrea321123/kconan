@@ -7,7 +7,7 @@ kconan 1.0 doesn't support
 *)
 
 (*
-Version 1.0.10
+Version 1.0.11
 It doesn't support:
     - char variables
     - parenthesis
@@ -18,7 +18,7 @@ program = var_init program;
 
 var_init = VAR ?ID? COLON type ASSIGN exp;;
 
-fun_declaration = FUN ?ID? OPEN_PARENTHESIS parameters CLOSE_PARENTHESIS COLON type OPEN_CURLY_BRACKET statement CLOSE_CURLY_BRACKET;
+fun_declaration = FUN ?ID? OPEN_PARENTHESIS parameters CLOSE_PARENTHESIS COLON type OPEN_CURLY_BRACKET {statement} CLOSE_CURLY_BRACKET;
 
 parameters = {parameter COMMA} parameter
 parameters = ?EMPTY?

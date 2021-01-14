@@ -1,5 +1,5 @@
 // ParseFunction.kt
-// Version 1.0.1
+// Version 1.0.2
 
 package kconan.parser.grammar
 
@@ -13,7 +13,7 @@ import kconan.parser.token.tokenToTreeToken
 import kconan.token.Token
 import kconan.token.TokenType
 
-// fun_declaration = FUN ?ID? COLON type OPEN_PARENTHESIS parameters CLOSE_PARENTHESIS OPEN_CURLY_BRACKET statement CLOSE_CURLY_BRACKET;
+// fun_declaration = FUN ?ID? COLON type OPEN_PARENTHESIS parameters CLOSE_PARENTHESIS OPEN_CURLY_BRACKET {statement} CLOSE_CURLY_BRACKET;
 fun parseFunction(i: Int, list: ArrayList<Token>): ParsingResult {
     var i = i
     val head = Ast(
@@ -32,7 +32,7 @@ fun parseFunction(i: Int, list: ArrayList<Token>): ParsingResult {
     expect("Expected '(' symbol", TokenType.OPENING_PARENTHESIS, i++, list)
 
     // second child is parameters
-    var result = parseParameters(i, list)
+    val result = parseParameters(i, list)
     if (!result.result) {
         throw Error(ErrorType.COMPILE_ERROR, "Expected parameters",
         list[i].line, list[i].column)
@@ -50,16 +50,26 @@ fun parseFunction(i: Int, list: ArrayList<Token>): ParsingResult {
 
     expect("Expected '{' symbol", TokenType.OPENING_CURLY_BRACKET, i++, list)
 
-    // fourth type is statement
-    result = parseStatement(i, list)
-    if (!result.result) {
-        throw Error (ErrorType.COMPILE_ERROR,
-            "Expected statement", list[i].line, list[i].column)
-    }
-    head.add(result.tree)
-    i = result.index
+    // next children are statement
+    i = parseStatements(head, i, list)
 
     expect("Expected '}' symbol", TokenType.CLOSING_CURLY_BRACKET, i++, list)
 
     return ParsingResult(true, head, i)
+}
+
+fun parseStatements(head: Ast, i: Int, list: ArrayList<Token>): Int {
+    var i = i
+    var result = parseStatement(i, list)
+
+    while (result.result) {
+        // we update the tree
+        i = result.index
+        head.add(result.tree)
+
+        // we read the next statement (with updated index i)
+        result = parseStatement(i, list)
+    }
+
+    return i
 }
