@@ -1,5 +1,5 @@
 // ParseProgramTest.kt
-// Version 1.0.1
+// Version 1.0.2
 
 package kconan.parser.grammar
 
@@ -36,7 +36,7 @@ class ParseProgramTest {
 
     @Test
     fun parseProgramTest3() {
-        val source = readFile("${conanSourcesDirectory}a.cn")
+        val source = readFile("${conanSourcesDirectory}function2.cn")
         val test = parseProgram(0, doLexing(source))
         assertEquals(TreeTokenType.FUNCTION, test.tree.children[1].children[0].head.token)
     }
