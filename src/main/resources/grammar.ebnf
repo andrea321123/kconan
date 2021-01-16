@@ -7,7 +7,7 @@ kconan 1.0 doesn't support
 *)
 
 (*
-Version 1.0.12
+Version 1.0.13
 It doesn't support:
     - char variables
     - parenthesis
@@ -31,8 +31,12 @@ statement = var_assign;
 
 var_assign = ?ID? ASSIGN exp;;
 
-exp = ?ID?;
-exp = number;
+// each rule from exp to primary also matches every rule of higher precedence
+exp = c;
+c = s {("==" | "!=" | ">" | ">=" | "<" | "<=") s};
+s = p {("+" | "-") p};
+p = primary {("*" | "/") primary};
+primary = ?ID? | number | ("(" exp ")");
 
 number = ?INT? | ?FLOAT?;
 

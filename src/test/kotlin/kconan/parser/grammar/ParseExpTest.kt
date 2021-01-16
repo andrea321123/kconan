@@ -1,5 +1,5 @@
 // ParseExpTest.kt
-// Version 1.0.0
+// Version 1.0.1
 
 package kconan.parser.grammar
 
@@ -16,6 +16,19 @@ class ParseExpTest {
         assertEquals(TreeTokenType.EXP, test.tree.head.token)
 
         test = parseExp(5, doLexing("var a: u64 = variable;"))
+        assertEquals(TreeTokenType.EXP, test.tree.head.token)
+
+        test = parseExp(5, doLexing("var a: u64 = fun;"))
+        assert(!test.result)
+    }
+
+    @Test
+    fun parsePrimaryTest() {
+        var test = parsePrimary(5, doLexing("var a: u64 = 3;"))
+        assertEquals(TreeTokenType.EXP, test.tree.head.token)
+        assertEquals("3", test.tree.children[0].head.value)
+
+        test = parsePrimary(5, doLexing("var a: u64 = variable;"))
         assertEquals(TreeTokenType.EXP, test.tree.head.token)
 
         test = parseExp(5, doLexing("var a: u64 = fun;"))
