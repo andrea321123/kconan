@@ -1,5 +1,5 @@
 // ParseExp.kt
-// Version 1.0.3
+// Version 1.0.4
 
 // ParseExp.kt contains all the expression rules:
 //  - exp
@@ -70,11 +70,20 @@ fun parsePrimary(i: Int, list: ArrayList<Token>): ParsingResult {
 
 // p = primary {("*" | "/") primary};
 fun parseP(i: Int, list: ArrayList<Token>): ParsingResult {
+    return parsePrecedence(pOperators, ::parsePrimary, i, list)
+}
+
+// parse an expression at same level of [set] with next higher precedence
+// level of [higherPrecedence]
+fun parsePrecedence(set: Set<TreeTokenType>,
+                    higherPrecedence: (Int, ArrayList<Token>) -> ParsingResult,
+                    i: Int,
+                    list: ArrayList<Token>): ParsingResult {
     var i = i
     val head = Ast(TreeToken(TreeTokenType.EXP, "",
         list[i].line, list[i].column))
 
-    var result = parsePrimary(i, list)
+    var result = higherPrecedence(i, list)
     if (!result.result) {
         return ParsingResult(false, head, i)
     }
@@ -82,12 +91,12 @@ fun parseP(i: Int, list: ArrayList<Token>): ParsingResult {
     i = result.index
     head.add(result.tree)
 
-    // we read until we don't found any p operator
-    while (pOperators.contains(tokenToTreeToken[list[i].token])) {
+    // we read until we don't found any [set] operator
+    while (set.contains(tokenToTreeToken[list[i].token])) {
         head.add(Ast(treeFromIndex(tokenToTreeToken[list[i].token]!!, i, list)))
 
         // parse next expression
-        result = parsePrimary(++i, list)
+        result = higherPrecedence(++i, list)
         if (!result.result) {
             throw Error(ErrorType.COMPILE_ERROR, "Expected expression",
                 list[i].line, list[i].column)
