@@ -1,5 +1,5 @@
 // ParseExp.kt
-// Version 1.0.4
+// Version 1.0.5
 
 // ParseExp.kt contains all the expression rules:
 //  - exp
@@ -71,6 +71,11 @@ fun parsePrimary(i: Int, list: ArrayList<Token>): ParsingResult {
 // p = primary {("*" | "/") primary};
 fun parseP(i: Int, list: ArrayList<Token>): ParsingResult {
     return parsePrecedence(pOperators, ::parsePrimary, i, list)
+}
+
+// s = p {("+" | "-") p};
+fun parseS(i: Int, list: ArrayList<Token>): ParsingResult {
+    return parsePrecedence(sOperators, ::parseP, i, list)
 }
 
 // parse an expression at same level of [set] with next higher precedence

@@ -1,5 +1,5 @@
 // ParseExpTest.kt
-// Version 1.0.3
+// Version 1.0.4
 
 package kconan.parser.grammar.expression
 
@@ -40,5 +40,16 @@ class ParseExpTest {
         var test = parseP(0, doLexing("43*65*3.14;"))
         assertEquals(9, test.tree.size())
         assertEquals(TreeTokenType.MULTIPLICATION, test.tree.children[1].head.token)
+    }
+
+    @Test
+    fun parseSTest() {
+        var test = parseS(0, doLexing("1+2*3+4/5*6;"))
+        assertEquals(21, test.tree.size())
+        assertEquals(TreeTokenType.ADDITION, test.tree.children[1].head.token)
+
+        test = parseS(0, doLexing("1*2-3 == 5;"))
+        assertEquals(11, test.tree.size())
+        assertEquals(5, test.index)
     }
 }
