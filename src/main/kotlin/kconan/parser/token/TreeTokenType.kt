@@ -1,5 +1,5 @@
 // TreeTokenType.kt
-// Version 1.0.7
+// Version 1.0.8
 
 package kconan.parser.token
 
@@ -25,6 +25,13 @@ enum class TreeTokenType {
     SUBTRACTION,
     MULTIPLICATION,
     DIVISION,
+
+    EQUALS_TO,
+    NOT_EQUALS_TO,
+    GREATER_THAN,
+    GREATER_OR_EQUALS,
+    LESS_THAN,
+    LESS_OR_EQUALS,
 
     I8_TYPE,
     U8_TYPE,

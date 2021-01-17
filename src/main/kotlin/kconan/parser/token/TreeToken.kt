@@ -1,5 +1,5 @@
 // Token.kt
-// Version 1.0.6
+// Version 1.0.7
 
 package kconan.parser.token
 
@@ -42,6 +42,13 @@ private val treeTokenToInfo = mapOf(
     TreeTokenType.SUBTRACTION to "subtraction",
     TreeTokenType.MULTIPLICATION to "multiplication",
     TreeTokenType.DIVISION to "division",
+
+    TreeTokenType.EQUALS_TO to "equals to (==)",
+    TreeTokenType.NOT_EQUALS_TO to "not equals to (!=)",
+    TreeTokenType.GREATER_THAN to "greater than (>)",
+    TreeTokenType.GREATER_OR_EQUALS to "greater or equals(>=)",
+    TreeTokenType.LESS_THAN to "less than (<)",
+    TreeTokenType.LESS_OR_EQUALS to "less or equals (<=)",
 
     TreeTokenType.IDENTIFIER to "identifier",
     TreeTokenType.INTEGER_CONSTANT to "integer constant",
