@@ -1,5 +1,5 @@
 // ParseExp.kt
-// Version 1.0.2
+// Version 1.0.3
 
 // ParseExp.kt contains all the expression rules:
 //  - exp
@@ -10,6 +10,8 @@
 
 package kconan.parser.grammar.expression
 
+import kconan.error.Error
+import kconan.error.ErrorType
 import kconan.parser.Ast
 import kconan.parser.ParsingResult
 import kconan.parser.grammar.treeFromIndex
@@ -66,3 +68,34 @@ fun parsePrimary(i: Int, list: ArrayList<Token>): ParsingResult {
     return ParsingResult(false, head, i)
 }
 
+// p = primary {("*" | "/") primary};
+fun parseP(i: Int, list: ArrayList<Token>): ParsingResult {
+    var i = i
+    val head = Ast(TreeToken(TreeTokenType.EXP, "",
+        list[i].line, list[i].column))
+
+    var result = parsePrimary(i, list)
+    if (!result.result) {
+        return ParsingResult(false, head, i)
+    }
+
+    i = result.index
+    head.add(result.tree)
+
+    // we read until we don't found any p operator
+    while (pOperators.contains(tokenToTreeToken[list[i].token])) {
+        head.add(Ast(treeFromIndex(tokenToTreeToken[list[i].token]!!, i, list)))
+
+        // parse next expression
+        result = parsePrimary(++i, list)
+        if (!result.result) {
+            throw Error(ErrorType.COMPILE_ERROR, "Expected expression",
+                list[i].line, list[i].column)
+        }
+
+        i = result.index
+        head.add(result.tree)
+    }
+
+    return ParsingResult(true, head, i)
+}
