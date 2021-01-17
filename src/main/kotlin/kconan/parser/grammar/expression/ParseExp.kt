@@ -1,5 +1,5 @@
 // ParseExp.kt
-// Version 1.0.1
+// Version 1.0.2
 
 // ParseExp.kt contains all the expression rules:
 //  - exp
@@ -8,10 +8,11 @@
 //  - p
 //  - primary
 
-package kconan.parser.grammar
+package kconan.parser.grammar.expression
 
 import kconan.parser.Ast
 import kconan.parser.ParsingResult
+import kconan.parser.grammar.treeFromIndex
 import kconan.parser.token.TreeToken
 import kconan.parser.token.TreeTokenType
 import kconan.parser.token.tokenToTreeToken
@@ -64,3 +65,4 @@ fun parsePrimary(i: Int, list: ArrayList<Token>): ParsingResult {
     // TODO: implement parenthesis rule
     return ParsingResult(false, head, i)
 }
+

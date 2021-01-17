@@ -1,7 +1,7 @@
 // ParseExpTest.kt
-// Version 1.0.1
+// Version 1.0.2
 
-package kconan.parser.grammar
+package kconan.parser.grammar.expression
 
 import kconan.lexer.doLexing
 import kconan.parser.token.TreeTokenType

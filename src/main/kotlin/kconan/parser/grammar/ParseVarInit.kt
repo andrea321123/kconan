@@ -1,5 +1,5 @@
 // ParseVarInit.kt
-// Version 1.0.0
+// Version 1.0.1
 
 package kconan.parser.grammar
 
@@ -7,6 +7,7 @@ import kconan.error.Error
 import kconan.error.ErrorType
 import kconan.parser.Ast
 import kconan.parser.ParsingResult
+import kconan.parser.grammar.expression.parseExp
 import kconan.parser.token.TreeToken
 import kconan.parser.token.TreeTokenType
 import kconan.parser.token.tokenToTreeToken
