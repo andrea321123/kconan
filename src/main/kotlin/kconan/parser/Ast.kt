@@ -1,5 +1,5 @@
 // Ast.kt
-// Version 1.0.0
+// Version 1.0.1
 
 package kconan.parser
 
@@ -7,7 +7,7 @@ import kconan.parser.token.TreeToken
 
 // Implement an Abstract syntax tree
 class Ast(val head: TreeToken) {
-    val children: ArrayList<Ast> = ArrayList()
+    var children: ArrayList<Ast> = ArrayList()
 
     fun add(child: Ast) {
         children.add(child)
