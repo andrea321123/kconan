@@ -1,5 +1,5 @@
 // OperatorGroups.kt
-// Version 1.0.0
+// Version 1.0.1
 
 package kconan.parser.grammar.expression
 
@@ -7,7 +7,8 @@ import kconan.parser.token.TreeTokenType
 
 val pOperators = setOf(
     TreeTokenType.MULTIPLICATION,
-    TreeTokenType.DIVISION)
+    TreeTokenType.DIVISION,
+    TreeTokenType.REMAINDER)
 
 val sOperators = setOf(
     TreeTokenType.ADDITION,
