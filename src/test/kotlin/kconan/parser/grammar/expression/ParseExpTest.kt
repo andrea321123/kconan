@@ -1,5 +1,5 @@
 // ParseExpTest.kt
-// Version 1.0.6
+// Version 1.0.7
 
 package kconan.parser.grammar.expression
 
@@ -11,7 +11,7 @@ import kotlin.test.Test
 
 class ParseExpTest {
     @Test
-    fun parseExpTest() {
+    fun parseExpTest1() {
         var test = parseExp(5, doLexing("var a: u64 = 3;"))
         assertEquals(TreeTokenType.EXP, test.tree.head.token)
 
@@ -20,6 +20,12 @@ class ParseExpTest {
 
         test = parseExp(5, doLexing("var a: u64 = fun;"))
         assert(!test.result)
+    }
+
+    @Test
+    fun parseExpTest2() {
+        var test = parseExp(0, doLexing("43-45%4.433;"))
+        assertEquals(10, test.tree.size())
     }
 
     @Test

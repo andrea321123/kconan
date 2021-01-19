@@ -1,5 +1,5 @@
 // ParseExp.kt
-// Version 1.0.6
+// Version 1.0.7
 
 // ParseExp.kt contains all the expression rules:
 //  - exp
@@ -24,24 +24,9 @@ import kconan.token.TokenType
 
 // exp = c;
 fun parseExp(i: Int, list: ArrayList<Token>): ParsingResult {
-    var i = i
-    val head = Ast(
-        TreeToken(
-            TreeTokenType.EXP, "",
-            list[i].line, list[i].column)
-    )
-
-    if (list[i].token == TokenType.IDENTIFIER) {
-        head.add(Ast(treeFromIndex(TreeTokenType.IDENTIFIER, i, list)))
-        return ParsingResult(true, head, ++i)
-    }
-    if (list[i].token == TokenType.INTEGER_CONSTANT ||
-        list[i].token == TokenType.FLOAT_CONSTANT) {
-        head.add(Ast(treeFromIndex(tokenToTreeToken[list[i].token]!!, i, list)))
-        return ParsingResult(true, head, ++i)
-    }
-
-    return ParsingResult(false, head, i)
+    val result = parseC(i, list)
+    removeRedundant(result.tree)
+    return result
 }
 
 // primary = ?ID? | number | ("(" exp ")");
