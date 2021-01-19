@@ -1,5 +1,5 @@
 // ParseExp.kt
-// Version 1.0.7
+// Version 1.0.8
 
 // ParseExp.kt contains all the expression rules:
 //  - exp
@@ -14,6 +14,7 @@ import kconan.error.Error
 import kconan.error.ErrorType
 import kconan.parser.Ast
 import kconan.parser.ParsingResult
+import kconan.parser.grammar.expect
 import kconan.parser.grammar.treeFromIndex
 import kconan.parser.token.TreeToken
 import kconan.parser.token.TreeTokenType
@@ -49,7 +50,18 @@ fun parsePrimary(i: Int, list: ArrayList<Token>): ParsingResult {
         return ParsingResult(true, head, ++i)
     }
 
-    // TODO: implement parenthesis rule
+    // parenthesis
+    if (list[i].token == TokenType.OPENING_PARENTHESIS) {
+        val result = parseExp(++i, list)
+        if (!result.result) {
+            throw Error(ErrorType.COMPILE_ERROR, "Expected expression",
+            list[i].line, list[i].column)
+        }
+        head.add(result.tree)
+        expect("Expected ')' symbol", TokenType.CLOSING_PARENTHESIS, result.index, list)
+
+        return ParsingResult(true, head, result.index +1)
+    }
     return ParsingResult(false, head, i)
 }
 

@@ -1,8 +1,9 @@
 // ParseExpTest.kt
-// Version 1.0.7
+// Version 1.0.8
 
 package kconan.parser.grammar.expression
 
+import kconan.error.Error
 import kconan.lexer.doLexing
 import kconan.parser.token.TreeTokenType
 import kotlin.test.assertEquals
@@ -29,6 +30,21 @@ class ParseExpTest {
     }
 
     @Test
+    fun parseExpTest3() {
+        var test = parseExp(5, doLexing("var a: u64 = fun;"))
+        assert(!test.result)
+
+        test = parseExp(0, doLexing("43*(15 + 9)%(5*9);"))
+
+        try {
+            parseExp(0, doLexing("43*(54+90;"))
+            assert(false)
+        } catch (e: Error) {
+
+        }
+    }
+
+    @Test
     fun parsePrimaryTest() {
         var test = parsePrimary(5, doLexing("var a: u64 = 3;"))
         assertEquals(TreeTokenType.EXP, test.tree.head.token)
@@ -36,9 +52,6 @@ class ParseExpTest {
 
         test = parsePrimary(5, doLexing("var a: u64 = variable;"))
         assertEquals(TreeTokenType.EXP, test.tree.head.token)
-
-        test = parseExp(5, doLexing("var a: u64 = fun;"))
-        assert(!test.result)
     }
 
     @Test
