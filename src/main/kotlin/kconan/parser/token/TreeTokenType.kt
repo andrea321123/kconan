@@ -1,5 +1,5 @@
 // TreeTokenType.kt
-// Version 1.0.9
+// Version 1.0.10
 
 package kconan.parser.token
 
@@ -10,6 +10,9 @@ enum class TreeTokenType {
     EXP,
     NUMBER,
     OPERATOR,
+
+    IF,
+    WHILE,
 
     VAR_ASSIGN,
     STATEMENT,

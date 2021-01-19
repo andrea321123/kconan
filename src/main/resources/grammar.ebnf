@@ -7,7 +7,7 @@ kconan 1.0 doesn't support
 *)
 
 (*
-Version 1.0.13
+Version 1.0.14
 It doesn't support:
     - char variables
     - parenthesis
@@ -28,8 +28,11 @@ parameter = ?ID? COLON numeric_type
 type = U8 | I8 | U16 | I16 | U32 | I32 | U64 | I64 | F32 | F64;
 
 statement = var_assign;
+statement = while;
 
 var_assign = ?ID? ASSIGN exp;;
+
+// while = WHILE "(" exp ")" "{" {statement} "}"
 
 // each rule from exp to primary also matches every rule of higher precedence
 exp = c;
