@@ -1,5 +1,5 @@
 // ParseFunction.kt
-// Version 1.0.2
+// Version 1.0.3
 
 package kconan.parser.grammar
 
@@ -56,20 +56,4 @@ fun parseFunction(i: Int, list: ArrayList<Token>): ParsingResult {
     expect("Expected '}' symbol", TokenType.CLOSING_CURLY_BRACKET, i++, list)
 
     return ParsingResult(true, head, i)
-}
-
-fun parseStatements(head: Ast, i: Int, list: ArrayList<Token>): Int {
-    var i = i
-    var result = parseStatement(i, list)
-
-    while (result.result) {
-        // we update the tree
-        i = result.index
-        head.add(result.tree)
-
-        // we read the next statement (with updated index i)
-        result = parseStatement(i, list)
-    }
-
-    return i
 }

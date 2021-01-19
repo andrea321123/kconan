@@ -1,10 +1,11 @@
 // Parser.kt
-// Version 1.0.5
+// Version 1.0.6
 
 package kconan.parser.grammar
 
 import kconan.error.Error
 import kconan.error.ErrorType
+import kconan.parser.Ast
 import kconan.parser.token.TreeToken
 import kconan.parser.token.TreeTokenType
 
@@ -39,4 +40,20 @@ fun treeFromIndex(token: TreeTokenType,
                   list: ArrayList<Token>): TreeToken {
     return TreeToken(token,
         list[index].value, list[index].line, list[index].column)
+}
+
+fun parseStatements(head: Ast, i: Int, list: ArrayList<Token>): Int {
+    var i = i
+    var result = parseStatement(i, list)
+
+    while (result.result) {
+        // we update the tree
+        i = result.index
+        head.add(result.tree)
+
+        // we read the next statement (with updated index i)
+        result = parseStatement(i, list)
+    }
+
+    return i
 }
