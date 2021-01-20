@@ -1,5 +1,5 @@
 // ParseStatement.kt
-// Version 1.0.2
+// Version 1.0.3
 
 package kconan.parser.grammar
 
@@ -31,6 +31,13 @@ fun parseStatement(i: Int, list: ArrayList<Token>): ParsingResult {
 
     // can be an if statement
     result = parseIf(i, list)
+    if (result.result) {
+        head.add(result.tree)
+        return ParsingResult(true, head, result.index)
+    }
+
+    // can be a return statement
+    result = parseReturn(i, list)
     if (result.result) {
         head.add(result.tree)
         return ParsingResult(true, head, result.index)

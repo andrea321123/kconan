@@ -1,5 +1,5 @@
 // TreeTokenType.kt
-// Version 1.0.11
+// Version 1.0.12
 
 package kconan.parser.token
 
@@ -16,6 +16,8 @@ enum class TreeTokenType {
 
     IF_BODY,
     ELSE_BODY,
+
+    RETURN,
 
     VAR_ASSIGN,
     STATEMENT,
