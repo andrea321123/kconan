@@ -1,5 +1,5 @@
 // ParseWhileTest.kt
-// Version 1.0.0
+// Version 1.0.1
 
 package kconan.parser.grammar
 
@@ -14,8 +14,6 @@ class ParseWhileTest {
     fun parseWhileTest() {
         val source = doLexing(readFile("${conanSourcesDirectory}while1.cn"))
         var test = parseWhile(14, source)
-
-        test = parseProgram(0, source)
-        assertEquals(56, test.tree.size())
+        assertEquals(16, test.tree.size())
     }
 }
