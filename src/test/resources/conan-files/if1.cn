@@ -2,9 +2,11 @@ fun main(): i32 {
     if (a > b * (2 -5)) {
         if (c == 10) {
             c = 9;
+            return 5 == (9 - a);
         } else {
             c = 11;
             d = 12;
+            return 4;
         }
     }
 }

@@ -14,6 +14,6 @@ class ParseIfTest {
     fun parseWhileTest() {
         val source = doLexing(readFile("${conanSourcesDirectory}if1.cn"))
         var test = parseIf(7, source)
-        assertEquals(41, test.tree.size())
+        assertEquals(57, test.tree.size())
     }
 }
