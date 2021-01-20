@@ -1,5 +1,5 @@
 // ParseStatement.kt
-// Version 1.0.1
+// Version 1.0.2
 
 package kconan.parser.grammar
 
@@ -24,6 +24,13 @@ fun parseStatement(i: Int, list: ArrayList<Token>): ParsingResult {
 
     // can be a while loop
     result = parseWhile(i, list)
+    if (result.result) {
+        head.add(result.tree)
+        return ParsingResult(true, head, result.index)
+    }
+
+    // can be an if statement
+    result = parseIf(i, list)
     if (result.result) {
         head.add(result.tree)
         return ParsingResult(true, head, result.index)

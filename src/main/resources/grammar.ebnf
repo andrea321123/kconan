@@ -29,10 +29,15 @@ type = U8 | I8 | U16 | I16 | U32 | I32 | U64 | I64 | F32 | F64;
 
 statement = var_assign;
 statement = while;
+statement = if
 
 var_assign = ?ID? ASSIGN exp;;
 
-// while = WHILE "(" exp ")" "{" {statement} "}"
+while = WHILE "(" exp ")" "{" {statement} "}";
+if = "if" "(" exp ")" "{" if_body "}" ["else" "{" else_body "}"];
+
+if_body = {statement};
+else_body = {statement};
 
 // each rule from exp to primary also matches every rule of higher precedence
 exp = c;
