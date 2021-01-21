@@ -1,5 +1,5 @@
 // Token.kt
-// Version 1.0.13
+// Version 1.0.14
 
 package kconan.parser.token
 
@@ -15,6 +15,7 @@ data class TreeToken(val token: TreeTokenType,
         // value or the identifier (are contained in value)
         if (token == TreeTokenType.INTEGER_CONSTANT ||
                 token == TreeTokenType.FLOAT_CONSTANT ||
+                token == TreeTokenType.CHAR_CONSTANT ||
                 token == TreeTokenType.IDENTIFIER
         ) {
             returnString += ": $value"
@@ -62,6 +63,9 @@ private val treeTokenToInfo = mapOf(
     TreeTokenType.IDENTIFIER to "identifier",
     TreeTokenType.INTEGER_CONSTANT to "integer constant",
     TreeTokenType.FLOAT_CONSTANT to "float constant",
+    TreeTokenType.CHAR_CONSTANT to "char constant",
+    TreeTokenType.TRUE_CONSTANT to "true constant",
+    TreeTokenType.FALSE_CONSTANT to "false constant",
 
     TreeTokenType.I8_TYPE to "i8 type",
     TreeTokenType.U8_TYPE to "u8 type",

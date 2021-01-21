@@ -1,5 +1,5 @@
 // TreeTokenType.kt
-// Version 1.0.14
+// Version 1.0.15
 
 package kconan.parser.token
 
@@ -29,6 +29,9 @@ enum class TreeTokenType {
     IDENTIFIER,
     INTEGER_CONSTANT,
     FLOAT_CONSTANT,
+    CHAR_CONSTANT,
+    TRUE_CONSTANT,
+    FALSE_CONSTANT,
 
     ADDITION,
     SUBTRACTION,

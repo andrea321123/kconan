@@ -9,7 +9,7 @@ kconan 1.0 doesn't support
 *)
 
 (*
-Version 1.0.20
+Version 1.0.21
 It doesn't support:
     - char variables
     - subtraction unary operator
@@ -52,13 +52,13 @@ exp = c;
 c = s {("==" | "!=" | ">" | ">=" | "<" | "<=") s};
 s = p {("+" | "-") p};
 p = primary {("*" | "/") primary};
-primary = function_call | ?ID? | number | ("(" exp ")");
+primary = function_call | ?ID? | constant | ("(" exp ")");
 
 function_call = ?ID? "(" exp ")";
 function_call = ?ID? "(" ")";
 function_call = ?ID? "(" {exp ","} exp);
 
-number = ?INT? | ?FLOAT?;
+constant = ?INT? | ?FLOAT? | ?CHAR? | ?TRUE? | ?FALSE?;
 
 operator = ADDITION | SUBTRACTION | MULTIPLICATION | DIVISION;
 

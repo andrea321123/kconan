@@ -1,5 +1,5 @@
 // ParseExp.kt
-// Version 1.0.9
+// Version 1.0.10
 
 // ParseExp.kt contains all the expression rules:
 //  - exp
@@ -58,7 +58,10 @@ fun parsePrimary(i: Int, list: ArrayList<Token>): ParsingResult {
 
     // constant
     if (list[i].token == TokenType.INTEGER_CONSTANT ||
-        list[i].token == TokenType.FLOAT_CONSTANT) {
+        list[i].token == TokenType.FLOAT_CONSTANT ||
+        list[i].token == TokenType.CHAR_CONSTANT ||
+        list[i].token == TokenType.TRUE_CONSTANT ||
+        list[i].token == TokenType.FALSE_CONSTANT) {
         head.add(Ast(treeFromIndex(tokenToTreeToken[list[i].token]!!, i, list)))
         return ParsingResult(true, head, ++i)
     }

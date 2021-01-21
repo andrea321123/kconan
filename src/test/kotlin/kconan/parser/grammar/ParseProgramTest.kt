@@ -1,5 +1,5 @@
 // ParseProgramTest.kt
-// Version 1.0.4
+// Version 1.0.5
 
 package kconan.parser.grammar
 
@@ -50,9 +50,13 @@ class ParseProgramTest {
 
     @Test
     fun parseProgramTest5() {
-        var source = "fun a(): bool {return a == 4;}"
+        var source = "fun a(): bool {return a == true;}"
         var test = parseProgram(0, doLexing(source))
         assertEquals (test.tree.children[0].children[2].head.token,
             TreeTokenType.BOOL_TYPE)
+
+        source = "fun a(a: char): bool {return a > 'b';}"
+        test = parseProgram(0, doLexing(source))
+        assertEquals(16, test.tree.size())
     }
 }
