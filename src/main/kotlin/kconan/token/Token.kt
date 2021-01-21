@@ -1,5 +1,5 @@
 // Token.kt
-// Version 1.0.2
+// Version 1.0.3
 
 package kconan.token
 
@@ -58,6 +58,7 @@ private val tokenToInfo = mapOf<TokenType, String>(
     TokenType.F32_TYPE to "f32 type",
     TokenType.F64_TYPE to "f64 type",
     TokenType.CHAR_TYPE to "char type",
+    TokenType.BOOL_TYPE to "bool type",
 
     TokenType.TRUE_CONSTANT to "true constant",
     TokenType.FALSE_CONSTANT to "false constant",

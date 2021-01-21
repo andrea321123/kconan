@@ -9,7 +9,7 @@ kconan 1.0 doesn't support
 *)
 
 (*
-Version 1.0.19
+Version 1.0.20
 It doesn't support:
     - char variables
     - subtraction unary operator
@@ -27,7 +27,7 @@ parameters = ?EMPTY?
 
 parameter = ?ID? COLON numeric_type
 
-type = U8 | I8 | U16 | I16 | U32 | I32 | U64 | I64 | F32 | F64;
+type = U8 | I8 | U16 | I16 | U32 | I32 | U64 | I64 | F32 | F64 | CHAR | BOOL;
 
 statement = function_call;;
 statement = var_assign;

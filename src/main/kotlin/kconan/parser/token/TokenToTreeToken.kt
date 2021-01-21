@@ -1,5 +1,5 @@
 // TokenToTreeToken.kt
-// Version 1.0.4
+// Version 1.0.5
 
 package kconan.parser.token
 
@@ -16,6 +16,8 @@ val tokenToTreeToken = mapOf(
     TokenType.I64_TYPE to TreeTokenType.I64_TYPE,
     TokenType.F32_TYPE to TreeTokenType.F32_TYPE,
     TokenType.F64_TYPE to TreeTokenType.F64_TYPE,
+    TokenType.CHAR_TYPE to TreeTokenType.CHAR_TYPE,
+    TokenType.BOOL_TYPE to TreeTokenType.BOOL_TYPE,
 
     TokenType.IDENTIFIER to TreeTokenType.IDENTIFIER,
     TokenType.INTEGER_CONSTANT to TreeTokenType.INTEGER_CONSTANT,

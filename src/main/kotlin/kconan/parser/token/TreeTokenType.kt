@@ -1,5 +1,5 @@
 // TreeTokenType.kt
-// Version 1.0.13
+// Version 1.0.14
 
 package kconan.parser.token
 
@@ -53,4 +53,6 @@ enum class TreeTokenType {
     U64_TYPE,
     F32_TYPE,
     F64_TYPE,
+    CHAR_TYPE,
+    BOOL_TYPE
 }

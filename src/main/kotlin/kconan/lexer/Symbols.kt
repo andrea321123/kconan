@@ -1,5 +1,5 @@
 // Symbols.kt
-// Version 1.0.3
+// Version 1.0.4
 
 package kconan.lexer
 
@@ -47,7 +47,7 @@ val conanWords = setOf(
     "return","break","continue",
     "import","as","this",
     "var","fun","struct",
-    "i8","u8","i16","u16","i32","u32","i64","u64","f32","f64",
+    "i8","u8","i16","u16","i32","u32","i64","u64","f32","f64","bool","char",
     "true","false","null",
     "and","or","not")
 
@@ -112,6 +112,8 @@ val keywordToToken = mapOf(
     "u64" to TokenType.U64_TYPE,
     "f32" to TokenType.F32_TYPE,
     "f64" to TokenType.F64_TYPE,
+    "bool" to TokenType.BOOL_TYPE,
+    "char" to TokenType.CHAR_TYPE,
     "true" to TokenType.TRUE_CONSTANT,
     "false" to TokenType.FALSE_CONSTANT,
     "null" to TokenType.NULL_CONSTANT,

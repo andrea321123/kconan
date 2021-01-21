@@ -1,5 +1,5 @@
 // TokenType.kt
-// Version 1.0.1
+// Version 1.0.2
 
 package kconan.token
 
@@ -34,6 +34,7 @@ enum class TokenType {
     F32_TYPE,
     F64_TYPE,
     CHAR_TYPE,
+    BOOL_TYPE,
 
     TRUE_CONSTANT,
     FALSE_CONSTANT,
