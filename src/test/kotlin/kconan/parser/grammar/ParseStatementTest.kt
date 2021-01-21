@@ -1,9 +1,8 @@
 // ParseStatementTest.kt
-// Version 1.0.0
+// Version 1.0.1
 
 package kconan.parser.grammar
 
-import kconan.error.Error
 import kconan.lexer.doLexing
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -11,7 +10,7 @@ import kotlin.test.assertFalse
 
 class ParseStatementTest {
     @Test
-    fun parseStatementTest() {
+    fun parseStatementTest1() {
         val varAssignSource = "a = 45.3;"
         var test = parseStatement(0, doLexing(varAssignSource))
         assertEquals(5, test.tree.size())
@@ -19,5 +18,13 @@ class ParseStatementTest {
 
         test = parseStatement(0, doLexing(": = 43.5 +;"))
         assertFalse(test.result)
+    }
+
+    @Test
+    fun parseStatementTest2() {
+        val source = "foo(bar);"
+        val test = parseStatement(0, doLexing(source))
+
+        assertEquals(5, test.tree.size())
     }
 }

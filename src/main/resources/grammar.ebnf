@@ -8,7 +8,7 @@ kconan 1.0 doesn't support
 *)
 
 (*
-Version 1.0.16
+Version 1.0.17
 It doesn't support:
     - char variables
 *)
@@ -27,6 +27,7 @@ parameter = ?ID? COLON numeric_type
 
 type = U8 | I8 | U16 | I16 | U32 | I32 | U64 | I64 | F32 | F64;
 
+statement = function_call;;
 statement = var_assign;
 statement = while;
 statement = if;
