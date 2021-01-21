@@ -1,5 +1,5 @@
 // ParseStatementTest.kt
-// Version 1.0.1
+// Version 1.0.2
 
 package kconan.parser.grammar
 
@@ -26,5 +26,12 @@ class ParseStatementTest {
         val test = parseStatement(0, doLexing(source))
 
         assertEquals(5, test.tree.size())
+    }
+
+    @Test
+    fun parseStatementTest3() {
+        val source = "var a: i64 = 453;"
+        val test = parseStatement(0, doLexing(source))
+        assertEquals(6, test.tree.size())
     }
 }
