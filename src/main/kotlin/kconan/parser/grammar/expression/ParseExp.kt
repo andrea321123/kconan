@@ -1,5 +1,5 @@
 // ParseExp.kt
-// Version 1.0.8
+// Version 1.0.9
 
 // ParseExp.kt contains all the expression rules:
 //  - exp
@@ -15,6 +15,7 @@ import kconan.error.ErrorType
 import kconan.parser.Ast
 import kconan.parser.ParsingResult
 import kconan.parser.grammar.expect
+import kconan.parser.grammar.parseFunctionCall
 import kconan.parser.grammar.treeFromIndex
 import kconan.parser.token.TreeToken
 import kconan.parser.token.TreeTokenType
@@ -30,7 +31,7 @@ fun parseExp(i: Int, list: ArrayList<Token>): ParsingResult {
     return result
 }
 
-// primary = ?ID? | number | ("(" exp ")");
+// primary = function_call | ?ID? | number | ("(" exp ")");
 fun parsePrimary(i: Int, list: ArrayList<Token>): ParsingResult {
     var i = i
     val head = Ast(
@@ -38,12 +39,24 @@ fun parsePrimary(i: Int, list: ArrayList<Token>): ParsingResult {
             TreeTokenType.EXP, "",
             list[i].line, list[i].column)
     )
+    var result: ParsingResult
 
+    // function call
+    if (list[i].token == TokenType.IDENTIFIER) {
+        result = parseFunctionCall(i, list)
+        if (result.result) {
+            head.add(result.tree)
+            return ParsingResult(true, head, result.index)
+        }
+    }
+
+    // variable
     if (list[i].token == TokenType.IDENTIFIER) {
         head.add(Ast(treeFromIndex(TreeTokenType.IDENTIFIER, i, list)))
         return ParsingResult(true, head, ++i)
     }
 
+    // constant
     if (list[i].token == TokenType.INTEGER_CONSTANT ||
         list[i].token == TokenType.FLOAT_CONSTANT) {
         head.add(Ast(treeFromIndex(tokenToTreeToken[list[i].token]!!, i, list)))
@@ -52,7 +65,7 @@ fun parsePrimary(i: Int, list: ArrayList<Token>): ParsingResult {
 
     // parenthesis
     if (list[i].token == TokenType.OPENING_PARENTHESIS) {
-        val result = parseExp(++i, list)
+        result = parseExp(++i, list)
         if (!result.result) {
             throw Error(ErrorType.COMPILE_ERROR, "Expected expression",
             list[i].line, list[i].column)
