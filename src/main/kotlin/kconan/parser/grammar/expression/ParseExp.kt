@@ -1,5 +1,5 @@
 // ParseExp.kt
-// Version 1.0.10
+// Version 1.0.11
 
 // ParseExp.kt contains all the expression rules:
 //  - exp
@@ -31,7 +31,7 @@ fun parseExp(i: Int, list: ArrayList<Token>): ParsingResult {
     return result
 }
 
-// primary = function_call | ?ID? | number | ("(" exp ")");
+// primary = function_call | ?ID? | constant | ("(" exp ")") | ("-" primary);
 fun parsePrimary(i: Int, list: ArrayList<Token>): ParsingResult {
     var i = i
     val head = Ast(
@@ -78,6 +78,20 @@ fun parsePrimary(i: Int, list: ArrayList<Token>): ParsingResult {
 
         return ParsingResult(true, head, result.index +1)
     }
+
+    // - primary
+    if (list[i].token == TokenType.SUBTRACTION) {
+        result = parsePrimary(++i, list)
+        if (result.result) {
+            head.add(Ast(treeFromIndex(TreeTokenType.SUBTRACTION, i -1, list)))
+            head.children[head.children.size -1].add(result.tree)
+            return ParsingResult(true, head, result.index)
+        }
+        else {
+            i--
+        }
+    }
+
     return ParsingResult(false, head, i)
 }
 

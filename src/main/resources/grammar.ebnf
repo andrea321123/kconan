@@ -9,10 +9,7 @@ kconan 1.0 doesn't support
 *)
 
 (*
-Version 1.0.21
-It doesn't support:
-    - char variables
-    - subtraction unary operator
+Version 1.0.22
 *)
 
 program = var_init | fun_declaration;
@@ -47,12 +44,12 @@ else_body = {statement};
 
 return = "return" exp;;
 
-// each rule from exp to primary also matches every rule of higher precedence
+(* each rule from exp to primary also matches every rule of higher precedence *)
 exp = c;
 c = s {("==" | "!=" | ">" | ">=" | "<" | "<=") s};
 s = p {("+" | "-") p};
 p = primary {("*" | "/") primary};
-primary = function_call | ?ID? | constant | ("(" exp ")");
+primary = function_call | ?ID? | constant | ("(" exp ")") | ("-" primary);
 
 function_call = ?ID? "(" exp ")";
 function_call = ?ID? "(" ")";

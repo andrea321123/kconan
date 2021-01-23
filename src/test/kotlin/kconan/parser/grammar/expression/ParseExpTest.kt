@@ -1,5 +1,5 @@
 // ParseExpTest.kt
-// Version 1.0.8
+// Version 1.0.9
 
 package kconan.parser.grammar.expression
 
@@ -45,13 +45,22 @@ class ParseExpTest {
     }
 
     @Test
-    fun parsePrimaryTest() {
+    fun parsePrimaryTest1() {
         var test = parsePrimary(5, doLexing("var a: u64 = 3;"))
         assertEquals(TreeTokenType.EXP, test.tree.head.token)
         assertEquals("3", test.tree.children[0].head.value)
 
         test = parsePrimary(5, doLexing("var a: u64 = variable;"))
         assertEquals(TreeTokenType.EXP, test.tree.head.token)
+    }
+
+    @Test
+    fun parsePrimaryTest2() {
+        var test = parsePrimary(5, doLexing("var a: u64 = -3"))
+        assertEquals(TreeTokenType.SUBTRACTION, test.tree.children[0].head.token)
+
+        test = parsePrimary(0, doLexing("- - -a;"))
+        assertEquals(8,test.tree.size())
     }
 
     @Test
