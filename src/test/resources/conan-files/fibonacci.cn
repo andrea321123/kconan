@@ -1,0 +1,9 @@
+// returns the nth number of Fibonacci sequence
+fun fibo(n: u64): u64 {
+    // exit condition
+    if (n <= 1) {
+        return n;
+    }
+
+    return fibo(n -1) + fibo(n -2);
+}

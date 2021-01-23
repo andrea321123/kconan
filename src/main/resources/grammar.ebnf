@@ -1,0 +1,72 @@
+(*
+kconan 1.0 doesn't support
+    - classes
+    - type inference
+    - for-each loop
+    - logical and, or, not
+    - bitwise operators
+    - val keyword
+*)
+
+(*
+Version 1.0.22
+*)
+
+program = var_init | fun_declaration;
+program = (var_init | fun_declaration) program;
+
+var_init = VAR ?ID? COLON type ASSIGN exp;;
+
+fun_declaration = FUN ?ID? OPEN_PARENTHESIS parameters CLOSE_PARENTHESIS COLON type OPEN_CURLY_BRACKET {statement} CLOSE_CURLY_BRACKET;
+
+parameters = {parameter COMMA} parameter
+parameters = ?EMPTY?
+
+parameter = ?ID? COLON numeric_type
+
+type = U8 | I8 | U16 | I16 | U32 | I32 | U64 | I64 | F32 | F64 | CHAR | BOOL;
+
+statement = function_call;;
+statement = var_assign;
+statement = var_init;
+statement = while;
+statement = if;
+statement = return;
+
+var_assign = ?ID? ASSIGN exp;;
+
+while = WHILE "(" exp ")" "{" {statement} "}";
+
+if = "if" "(" exp ")" "{" if_body "}" ["else" "{" else_body "}"];
+
+if_body = {statement};
+else_body = {statement};
+
+return = "return" exp;;
+
+(* each rule from exp to primary also matches every rule of higher precedence *)
+exp = c;
+c = s {("==" | "!=" | ">" | ">=" | "<" | "<=") s};
+s = p {("+" | "-") p};
+p = primary {("*" | "/") primary};
+primary = function_call | ?ID? | constant | ("(" exp ")") | ("-" primary);
+
+function_call = ?ID? "(" exp ")";
+function_call = ?ID? "(" ")";
+function_call = ?ID? "(" {exp ","} exp);
+
+constant = ?INT? | ?FLOAT? | ?CHAR? | ?TRUE? | ?FALSE?;
+
+operator = ADDITION | SUBTRACTION | MULTIPLICATION | DIVISION;
+
+
+VAR = "var";
+COLON = ":";
+ASSIGN = "=";
+ADDITION = "+";
+SUBTRACTION = "-";
+MULTIPLICATION = "*";
+DIVISION = "/";
+FUN = "fun";
+OPEN_CURLY_BRACKET = "{"
+CLOSE_CURLY_BRACKET = "}"
