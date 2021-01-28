@@ -1,17 +1,22 @@
 // Parser.kt
-// Version 1.0.6
+// Version 1.0.7
 
 package kconan.parser.grammar
 
 import kconan.error.Error
 import kconan.error.ErrorType
 import kconan.parser.Ast
+import kconan.parser.ParsingResult
 import kconan.parser.token.TreeToken
 import kconan.parser.token.TreeTokenType
 
 import kconan.token.Token
 import kconan.token.TokenType
 import kconan.token.types
+
+fun parse(list: ArrayList<Token>): ParsingResult {
+    return parseProgram(0, list)
+}
 
 // throw an error if the token at [index] isn't [tokenType]
 fun expect(errorMessage: String,
