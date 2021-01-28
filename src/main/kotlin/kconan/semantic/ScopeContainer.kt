@@ -1,5 +1,5 @@
 // IdContainer
-// Version 1.0.2
+// Version 1.0.3
 
 package kconan.semantic
 
@@ -19,22 +19,22 @@ class ScopeContainer<T> {
     }
 
     // create a new scope on top of the stack
-    public fun push() {
+    fun push() {
         stack.add(HashSet())
     }
 
     // delete the inner scope from the stack
-    public fun pop() {
+    fun pop() {
         stack.removeAt(stack.size -1)
     }
 
     // add an identifier to the last scope
-    public fun add(id: T) {
+    fun add(id: T) {
         stack.last().add(id)
     }
 
     // check if an identifier is present on the stack
-    public fun contains(id: String): Boolean {
+    fun contains(id: String): Boolean {
         // search for the id from the last scope to the global scope
         for (i in stack.size -1 downTo 0) {
             if (stack[i].contains(id)) {
@@ -42,5 +42,16 @@ class ScopeContainer<T> {
             }
         }
         return false
+    }
+
+    override fun toString(): String {
+        var str = ""
+
+        for (i in stack.size -1 downTo 0) {
+            stack[i].forEach { e -> str += e.toString() + "\n"}
+            str += "----------\n"
+        }
+
+        return str
     }
 }
