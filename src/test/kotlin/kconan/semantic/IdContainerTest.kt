@@ -1,8 +1,9 @@
 // IdContainerTest.kt
 // Version 1.0.0
 
-package kconan.semantic.name
+package kconan.semantic
 
+import kconan.semantic.IdContainer
 import kotlin.test.Test
 import kotlin.test.assertFalse
 

@@ -1,7 +1,7 @@
 // IdContainer
 // Version 1.0.0
 
-package kconan.semantic.name
+package kconan.semantic
 
 import java.util.HashSet
 import kotlin.collections.ArrayList
