@@ -1,5 +1,5 @@
 // IdContainerTest.kt
-// Version 1.0.0
+// Version 1.0.1
 
 package kconan.semantic
 
@@ -10,7 +10,7 @@ import kotlin.test.assertFalse
 class IdContainerTest {
     @Test
     fun idContainerTest() {
-        val test = IdContainer()
+        val test = IdContainer<String>()
         test.add("foo")
         test.add("bar")
         test.push()
