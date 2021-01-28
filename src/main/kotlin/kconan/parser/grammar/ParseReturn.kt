@@ -13,6 +13,9 @@ import kconan.parser.token.TreeTokenType
 import kconan.token.Token
 import kconan.token.TokenType
 
+// return = "return" exp;;
+// Children:
+// 0: exp
 fun parseReturn(i: Int, list: ArrayList<Token>): ParsingResult {
     var i = i
     val head = Ast(

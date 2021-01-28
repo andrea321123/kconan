@@ -16,6 +16,9 @@ import kconan.token.TokenType
 // function_call = ?ID? "(" exp ")";
 // function_call = ?ID? "(" ")";
 // function_call = ?ID? "(" {exp ","} exp);
+// Children:
+// 0: id
+// [1..n]: exp
 fun parseFunctionCall(i: Int, list: ArrayList<Token>): ParsingResult {
     var i = i
     val head = Ast(

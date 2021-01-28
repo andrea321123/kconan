@@ -16,6 +16,9 @@ import java.lang.IndexOutOfBoundsException
 
 // program = var_init | fun_declaration;
 // program = (var_init | fun_declaration) program;
+// Children:
+// 0: var init | function
+// 1: program
 fun parseProgram(i: Int, list: ArrayList<Token>): ParsingResult {
     var i = i
     var valid = false

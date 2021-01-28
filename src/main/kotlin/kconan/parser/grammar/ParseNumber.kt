@@ -13,6 +13,8 @@ import kconan.token.Token
 import kconan.token.TokenType
 
 // number = ?INT? | ?FLOAT?;
+// Children
+// 0: Integer or float constant
 fun parseNumber(i: Int, list: ArrayList<Token>): ParsingResult {
     val head = Ast(
         TreeToken(

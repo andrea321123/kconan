@@ -15,6 +15,10 @@ import kconan.token.Token
 import kconan.token.TokenType
 
 // var_init = VAR ?ID? COLON type ASSIGN exp;;
+// children:
+// 0: id
+// 1: type
+// 2: exp
 fun parseVarInit(i: Int, list: ArrayList<Token>): ParsingResult {
     var i = i
     val head = Ast(

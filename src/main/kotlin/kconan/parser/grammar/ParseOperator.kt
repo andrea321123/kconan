@@ -12,6 +12,8 @@ import kconan.token.Token
 import kconan.token.operators
 
 // operator = ADDITION | SUBTRACTION | MULTIPLICATION | DIVISION;
+// Children:
+// 0: operator type
 fun parseOperator(i: Int, list: ArrayList<Token>): ParsingResult {
     val head = Ast(
         TreeToken(

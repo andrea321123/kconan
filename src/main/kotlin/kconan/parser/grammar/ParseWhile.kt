@@ -14,6 +14,9 @@ import kconan.token.Token
 import kconan.token.TokenType
 
 // while = WHILE "(" exp ")" "{" {statement} "}"
+// Children:
+// 0: exp
+// [1..n]: statements
 fun parseWhile(i: Int, list: ArrayList<Token>): ParsingResult {
     var i = i
     val head = Ast(

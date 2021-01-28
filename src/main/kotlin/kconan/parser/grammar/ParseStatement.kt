@@ -16,6 +16,8 @@ import kconan.token.TokenType
 // statement = while;
 // statement = if;
 // statement = return;
+// Children:
+// 0: statement type
 fun parseStatement(i: Int, list: ArrayList<Token>): ParsingResult {
     val head = Ast(TreeToken(TreeTokenType.STATEMENT, "",
         list[i].line, list[i].column))

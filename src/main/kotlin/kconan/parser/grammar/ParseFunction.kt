@@ -14,6 +14,11 @@ import kconan.token.Token
 import kconan.token.TokenType
 
 // fun_declaration = FUN ?ID? COLON type OPEN_PARENTHESIS parameters CLOSE_PARENTHESIS OPEN_CURLY_BRACKET {statement} CLOSE_CURLY_BRACKET;
+// Children:
+// 0: id
+// 1: parameters
+// 2: type
+// [3..n]: statement
 fun parseFunction(i: Int, list: ArrayList<Token>): ParsingResult {
     var i = i
     val head = Ast(

@@ -15,6 +15,9 @@ import kconan.token.Token
 import kconan.token.TokenType
 
 // var_assign = ?ID? ASSIGN exp;;
+// Children
+// 0: id
+// 1: exp
 fun parseVarAssign(i: Int, list: ArrayList<Token>): ParsingResult {
     var i = i
     val head = Ast(

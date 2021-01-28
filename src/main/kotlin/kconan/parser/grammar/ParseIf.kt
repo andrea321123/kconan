@@ -14,6 +14,11 @@ import kconan.token.Token
 import kconan.token.TokenType
 
 // if = "if" "(" exp ")" "{" if_body "}" ["else" "{" else_body "}"];
+// Children:
+// 0: exp
+// 1: if body
+// [2]: exp
+// [3]: else body
 fun parseIf(i: Int, list: ArrayList<Token>): ParsingResult {
     var i = i
     val head = Ast(

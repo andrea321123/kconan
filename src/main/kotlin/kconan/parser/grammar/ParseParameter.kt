@@ -12,6 +12,9 @@ import kconan.token.Token
 import kconan.token.TokenType
 
 // parameter = ?ID? COLON numeric_type
+// Children:
+// 0: id
+// 1: type
 fun parseParameter(i: Int, list: ArrayList<Token>): ParsingResult {
     val head = Ast(
         TreeToken(

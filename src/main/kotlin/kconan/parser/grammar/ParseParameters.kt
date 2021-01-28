@@ -15,6 +15,8 @@ import kconan.token.TokenType
 
 // parameters = {parameter COMMA} parameter
 // parameters = ?EMPTY?
+// Children:
+// [0..n]: parameter
 fun parseParameters(i: Int, list: ArrayList<Token>): ParsingResult {
     val head = Ast(
         TreeToken(
