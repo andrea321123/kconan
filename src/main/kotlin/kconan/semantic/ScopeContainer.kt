@@ -1,5 +1,5 @@
 // IdContainer
-// Version 1.0.1
+// Version 1.0.2
 
 package kconan.semantic
 
@@ -11,7 +11,7 @@ import kotlin.collections.ArrayList
 // The outer scope is the global scope
 // A new scope can be created by function, if, and while
 // Note that conan allows shadowing
-class IdContainer<T> {
+class ScopeContainer<T> {
     private val stack = ArrayList<HashSet<T>>()
 
     init {
