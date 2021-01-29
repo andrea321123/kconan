@@ -1,5 +1,5 @@
 // IdContainer
-// Version 1.0.3
+// Version 1.0.4
 
 package kconan.semantic
 
@@ -34,7 +34,7 @@ class ScopeContainer<T> {
     }
 
     // check if an identifier is present on the stack
-    fun contains(id: String): Boolean {
+    fun contains(id: T): Boolean {
         // search for the id from the last scope to the global scope
         for (i in stack.size -1 downTo 0) {
             if (stack[i].contains(id)) {
@@ -42,6 +42,11 @@ class ScopeContainer<T> {
             }
         }
         return false
+    }
+
+    // check if an identifier is present on the last scope
+    fun lastContains(id: T): Boolean {
+        return stack[stack.size -1].contains(id)
     }
 
     override fun toString(): String {
