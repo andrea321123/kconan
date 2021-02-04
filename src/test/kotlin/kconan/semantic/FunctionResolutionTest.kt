@@ -1,5 +1,5 @@
 // FunctionResolutionTest.kt
-// Version 1.0.0
+// Version 1.0.1
 
 package kconan.semantic
 
@@ -28,6 +28,25 @@ class FunctionResolutionTest {
             resolveFunctions(tree)
         } catch (e: Error) {
             assert(e.toString().contains("d function"))
+        }
+    }
+
+    @Test
+    fun checkFunctionCallArgumentsNumberTest1() {
+        val source = readFile("${conanSourcesDirectory}math2.cn")
+        val tree = parse(doLexing(source)).tree
+        checkFunctionCallArgumentsNumber(tree)
+    }
+
+    @Test
+    fun checkFunctionCallArgumentsNumberTest2() {
+        val source = "fun a(i: i32):bool {return a(0, 5);}"
+        val tree = parse(doLexing(source)).tree
+        try {
+            checkFunctionCallArgumentsNumber(tree)
+            assert(false)
+        } catch (e: Error) {
+            assert(e.toString().contains("1 expected"))
         }
     }
 }

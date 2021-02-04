@@ -1,0 +1,34 @@
+// math2.cn
+// Collection of math utils
+
+fun positivePow(n: i64, exp: u64): i64 {
+    var result: i64 = 1;
+    var i: i32 = 0;
+
+    while (i < exp) {
+        result = result * n;
+        i = i +1;
+    }
+
+    return result;
+}
+
+fun abs(n: f64): f64 {
+    if (n < 0) {
+        return -n;
+    }
+    else {
+        return n;
+    }
+}
+
+fun fact(n: i64): u64 {
+    if (n == 0) {
+        return 1;
+    }
+    if (n == 1) {
+            return 1;
+    }
+
+    return n * fact(n -1);
+}
