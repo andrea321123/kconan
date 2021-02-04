@@ -1,9 +1,10 @@
-// IdContainerTest.kt
+// ScopeContainerTest.kt
 // Version 1.0.2
 
 package kconan.semantic
 
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 
 class ScopeContainerTest {
@@ -20,5 +21,16 @@ class ScopeContainerTest {
         test.pop()
         assertFalse(test.contains("c"))
         assert(test.contains("foo"))
+    }
+
+    @Test
+    fun toListTest() {
+        val test = ScopeContainer<String>()
+        test.add("a")
+        test.add("b")
+        test.push()
+        test.add("c")
+
+        assertEquals(2, test.toList(0).size)
     }
 }

@@ -1,5 +1,5 @@
-// IdContainer
-// Version 1.0.4
+// ScopeContainer.kt
+// Version 1.0.5
 
 package kconan.semantic
 
@@ -47,6 +47,16 @@ class ScopeContainer<T> {
     // check if an identifier is present on the last scope
     fun lastContains(id: T): Boolean {
         return stack[stack.size -1].contains(id)
+    }
+
+    // return the depth of the stack
+    fun depth(): Int {
+        return  stack.size
+    }
+
+    // return a list of the elements of the scope at depth [depth]
+    fun toList(depth: Int): ArrayList<T> {
+        return ArrayList(stack[depth])
     }
 
     override fun toString(): String {
