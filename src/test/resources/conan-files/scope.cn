@@ -1,0 +1,17 @@
+var a: f64 = 2.6;
+var b: f32 = 3.1;
+
+fun c(a:i64, z:u8): i32 {
+    var b: u8 = 43;
+
+    while (b > a) {
+        var b: i32 = 43;
+        var a: u8 = 34;
+        a = a+ 1;
+
+    }
+}
+
+fun d(a:i64, b: i32): bool {
+    return a+b+ c(a, b) + c(d(a, b), b);
+}
