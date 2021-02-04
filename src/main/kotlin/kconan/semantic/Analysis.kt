@@ -1,31 +1,46 @@
 // SemanticAnalysis.kt
-// Version 1.0.0
+// Version 1.0.1
 
 package kconan.semantic
 
 import kconan.error.ErrorType
 import kconan.parser.Ast
+import kconan.parser.token.TreeTokenType
 
 fun resolveNames() {
 
 }
 
-// Add to a IdContainer all function and global variables declaration
-fun addGlobalDeclarations(ast: Ast): ScopeContainer<String> {
+// Return a container with all global variables
+fun getGlobalVarDeclarations(ast: Ast): ScopeContainer<String> {
+    return getGlobalBlocks(ast, TreeTokenType.VAR_INIT)
+}
+
+// Return a container with all functions
+fun getFunctionDeclarations(ast: Ast): ScopeContainer<String> {
+    return getGlobalBlocks(ast, TreeTokenType.FUNCTION)
+}
+
+// Add to a IdContainer all blocks that are [type] TreeTokenType
+private fun getGlobalBlocks(ast: Ast, type: TreeTokenType): ScopeContainer<String> {
     val container = ScopeContainer<String>()
     var currentNode = ast
 
     while (currentNode.children.size == 2) {
         // one child is a function or a global variable,
         // the other is another program
-        addIdentifier(currentNode.children[0].children[0].head.value,
-            container)
+        if (currentNode.children[0].head.token == type) {
+            addIdentifier(currentNode.children[0].children[0].head.value,
+                container)
+        }
         currentNode = currentNode.children[1]
     }
 
     // we resolve the last part of the program
-    addIdentifier(currentNode.children[0].children[0].head.value,
-        container)
+    if (currentNode.children[0].head.token == type) {
+        addIdentifier(currentNode.children[0].children[0].head.value,
+            container)
+    }
 
     return container
 }

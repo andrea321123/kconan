@@ -1,5 +1,5 @@
 // AnalysisTest.kt
-// Version 1.0.0
+// Version 1.0.1
 
 package kconan.semantic
 
@@ -18,9 +18,9 @@ class AnalysisTest {
     fun addGlobalDeclarationsTest1() {
         val source = readFile("${conanSourcesDirectory}function2.cn")
         val tree = parse(doLexing(source)).tree
-        val test = addGlobalDeclarations(tree)
+        val test = getGlobalVarDeclarations(tree)
         assert(test.contains("pi"))
-        assert(test.contains("foo"))
+        assertFalse(test.contains("foo"))
         assertFalse(test.contains("test"))
     }
 
@@ -30,7 +30,7 @@ class AnalysisTest {
         val tree = parse(doLexing(source)).tree
 
         try {
-            addGlobalDeclarations(tree)
+            getGlobalVarDeclarations(tree)
             assert(false)
         } catch (e: Error) {
             e.toString().contains("multiple times")
