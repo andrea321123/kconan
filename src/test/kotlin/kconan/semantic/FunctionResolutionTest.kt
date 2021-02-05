@@ -1,5 +1,5 @@
 // FunctionResolutionTest.kt
-// Version 1.0.1
+// Version 1.0.2
 
 package kconan.semantic
 
@@ -8,7 +8,6 @@ import kconan.io.readFile
 import kconan.lexer.doLexing
 import kconan.parser.grammar.parse
 import kotlin.test.Test
-import kotlin.test.assertFalse
 
 class FunctionResolutionTest {
     private val conanSourcesDirectory = "src/test/resources/conan-files/"
@@ -17,7 +16,7 @@ class FunctionResolutionTest {
     fun resolveFunctionTest1() {
         val source = readFile("${conanSourcesDirectory}scope.cn")
         val tree = parse(doLexing(source)).tree
-        resolveFunctions(tree)
+        resolveFunctionsNames(tree)
     }
 
     @Test
@@ -25,7 +24,7 @@ class FunctionResolutionTest {
         val source = "fun a():u32{return b();} fun b():u16{return d(a());}"
         val tree = parse(doLexing(source)).tree
         try {
-            resolveFunctions(tree)
+            resolveFunctionsNames(tree)
         } catch (e: Error) {
             assert(e.toString().contains("d function"))
         }
