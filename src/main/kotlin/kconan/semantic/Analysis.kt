@@ -1,5 +1,5 @@
 // SemanticAnalysis.kt
-// Version 1.0.2
+// Version 1.0.3
 
 package kconan.semantic
 
@@ -55,7 +55,7 @@ private fun getGlobalBlocks(ast: Ast, type: TreeTokenType): ScopeContainer<Strin
     return container
 }
 
-private fun addIdentifier(value: String, container: ScopeContainer<String>) {
+fun addIdentifier(value: String, container: ScopeContainer<String>) {
     if (container.lastContains(value)) {
         throw kconan.error.Error(
             ErrorType.COMPILE_ERROR,
