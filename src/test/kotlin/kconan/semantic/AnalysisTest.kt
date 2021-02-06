@@ -1,5 +1,5 @@
 // AnalysisTest.kt
-// Version 1.0.2
+// Version 1.0.3
 
 package kconan.semantic
 
@@ -9,6 +9,7 @@ import kconan.lexer.doLexing
 import kconan.parser.grammar.parse
 
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 
 class AnalysisTest {
@@ -58,5 +59,12 @@ class AnalysisTest {
         } catch (e: Error) {
             e.toString().contains("multiple times")
         }
+    }
+
+    @Test
+    fun getFunctionAstTest() {
+        val source = readFile("${conanSourcesDirectory}/scope.cn")
+        val list = getFunctionAst(parse(doLexing(source)).tree)
+        assertEquals(2, list.size)
     }
 }

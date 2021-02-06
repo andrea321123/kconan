@@ -1,5 +1,5 @@
 // SemanticAnalysis.kt
-// Version 1.0.3
+// Version 1.0.4
 
 package kconan.semantic
 
@@ -63,4 +63,26 @@ fun addIdentifier(value: String, container: ScopeContainer<String>) {
     }
 
     container.add(value)
+}
+
+// Return a list of Ast with FUNCTION as head token
+// [ast] must be a program
+fun getFunctionAst(ast: Ast): ArrayList<Ast> {
+    val list = ArrayList<Ast>()
+    var currentNode = ast
+
+    while (currentNode.children.size == 2) {
+        if (currentNode.children[0].head.token == TreeTokenType.FUNCTION) {
+            list.add(currentNode.children[0])
+        }
+
+        currentNode = currentNode.children[1]
+    }
+
+    // check last block
+    if (currentNode.children[0].head.token == TreeTokenType.FUNCTION) {
+        list.add(currentNode.children[0])
+    }
+
+    return list
 }
