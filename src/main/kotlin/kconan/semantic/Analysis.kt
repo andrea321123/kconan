@@ -1,5 +1,5 @@
 // SemanticAnalysis.kt
-// Version 1.0.1
+// Version 1.0.2
 
 package kconan.semantic
 
@@ -7,8 +7,18 @@ import kconan.error.ErrorType
 import kconan.parser.Ast
 import kconan.parser.token.TreeTokenType
 
-fun resolveNames() {
+fun resolveNames(ast: Ast) {
+    resolveFunctionsNames(ast)
+    val container = getGlobalVarDeclarations(ast)
+    var currentNode = ast
 
+    while (currentNode.children.size == 2) {
+        // checkVarNames(currentNode) only inside functions bodies
+
+        currentNode = currentNode.children[1]
+    }
+
+    // checkVarNames(currentNode) only if last block is function body
 }
 
 // Return a container with all global variables
