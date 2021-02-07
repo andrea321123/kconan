@@ -1,5 +1,5 @@
 // AnalysisTest.kt
-// Version 1.0.3
+// Version 1.0.4
 
 package kconan.semantic
 
@@ -14,6 +14,25 @@ import kotlin.test.assertFalse
 
 class AnalysisTest {
     private val conanSourcesDirectory = "src/test/resources/conan-files/"
+
+    @Test
+    fun resolveNamesTest1() {
+        val source = readFile("${conanSourcesDirectory}function2.cn")
+        val tree = parse(doLexing(source)).tree
+        try {
+            resolveNames(tree)
+            assert(false)
+        } catch (e: Error) {
+            assert(e.toString().contains("b not defined"))
+        }
+    }
+
+    @Test
+    fun resolveNamesTest2() {
+        val source = readFile("${conanSourcesDirectory}scope.cn")
+        val tree = parse(doLexing(source)).tree
+        resolveNames(tree)
+    }
 
     @Test
     fun getGlobalVarDeclarationTest1() {
