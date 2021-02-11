@@ -1,12 +1,12 @@
 // Interpreter.kt
-// Version 1.0.1
+// Version 1.0.2
 
 package kconan.interpreter
 
+import kconan.error.Error
+import kconan.error.ErrorType
 import kconan.parser.Ast
 import kconan.parser.token.TreeTokenType
-import kconan.semantic.ScopeContainer
-import kconan.semantic.addIdentifier
 import kconan.semantic.getFunctionAst
 import kconan.util.ScopeMap
 
@@ -18,10 +18,52 @@ import kconan.util.ScopeMap
 
 // Class that allows to interpret an ast
 class Interpreter(val ast: Ast) {
-    private val scope = getGlobalVariables()
     private val functionList = getFunctionAst(ast)
+    private val scope = getGlobalVariables()
 
+    // it executes the program (starting from the main() function)
     fun run(ast: Ast) {
+        for (i in functionList) {
+            if (i.children[0].head.value == "main") {
+                runFunction(i)
+                return
+            }
+        }
+    }
+
+    //In kconan 1.0, all functions must return an i32 (kotlin Int)
+    // The return value will be given by throwing a ReturnException
+    fun runFunction(ast: Ast): Int {
+        // a function creates a scope with the parameters
+        scope.push()
+        for (i in ast.children[1].children) {
+            scope.add(i.head.value, 0)
+        }
+
+        // then we run each statement of the function
+        try {
+            for (i in 3 until ast.children.size) {
+                // ast.children[i] is a statement node,
+                // we have to execute the children of the statement
+                walkAst(ast.children[i].children[0])
+            }
+        } catch (e: ReturnException) {
+            return e.returnValue
+        }
+
+        // if we arrive here, the function hasn't returned any value;
+        // a runtime error should be thrown
+        throw Error(ErrorType.RUNTIME_ERROR,
+            "Function ${ast.children[0].head.value} didn't return any value",
+            ast.head.line, ast.head.column)
+    }
+
+    fun walkAst(ast: Ast) {
+        // if the statement is a return, throw a ReturnException
+        if (ast.head.token == TreeTokenType.RETURN) {
+            val returnValue = solveExp(ast.children[0])
+            throw ReturnException(returnValue)
+        }
     }
 
     // Add to a ScopeMap<Integer> all global variables
