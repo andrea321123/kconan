@@ -30,26 +30,13 @@ class InterpreterTest {
         assertEquals(100, test.solveExp(exp))
     }
 
-    @Test
-    fun runTest1() {
-        val source = "var a: i32 = 32; fun main(): i32 { return a+ 65+ 3;}"
-        val tree = parse(doLexing(source)).tree
-        resolveNames(tree)
-        val test = Interpreter(tree)
-        test.run(tree)      // should not throw exceptions
-    }
 
     @Test
-    fun runTest2() {
-        val source = "var a: i32 = 32; fun main(): i32 { a = 65+ 3;}"
+    fun runtTest3() {
+        val source = "var a:i32=32; fun main():i32{return foo(a -1) *2;} fun foo(b: i32):i32{return b-5;}"
         val tree = parse(doLexing(source)).tree
         resolveNames(tree)
         val test = Interpreter(tree)
-        try {
-            test.run(tree)
-            assert(false)
-        } catch (e: Error) {
-            assertEquals(ErrorType.RUNTIME_ERROR, e.errorType)
-        }
+        assertEquals(52, test.runFunction(test.functionMap["main"]!!, ArrayList()))
     }
 }

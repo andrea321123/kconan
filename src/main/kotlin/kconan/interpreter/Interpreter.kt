@@ -15,11 +15,12 @@ import kconan.util.ScopeMap
 // - every function must have a return type
 // - if, else and while must have {} brackets
 // - doesn't check if each function always reach a return statement
+// main function() cannot have arguments
 
 // Class that allows to interpret an ast
 class Interpreter(val ast: Ast) {
     private val functionList = getFunctionAst(ast)
-    private val functionMap = createFunctionMap(functionList)
+    val functionMap = createFunctionMap(functionList)
 
     private val scope = getGlobalVariables()
 
@@ -28,7 +29,7 @@ class Interpreter(val ast: Ast) {
     fun run(ast: Ast) {
         for (i in functionList) {
             if (i.children[0].head.value == "main") {
-                runFunction(i)
+                runFunction(i, ArrayList())
                 return
             }
         }
@@ -36,12 +37,20 @@ class Interpreter(val ast: Ast) {
 
     //In kconan 1.0, all functions must return an i32 (kotlin Int)
     // The return value will be given by throwing a ReturnException
-    fun runFunction(ast: Ast): Int {
-        // a function creates a scope with the parameters
+    fun runFunction(ast: Ast, arguments: ArrayList<Int>): Int {
+        // a function creates a scope with the arguments
         scope.push()
-        for (i in ast.children[1].children) {
-            scope.add(i.head.value, 0)
+        for (i in 0 until ast.children[1].children.size) {
+            // here we pair tha parameter name with the actual argument
+            scope.add(ast.children[1].children[i].children[0].head.value,
+                arguments[i])
         }
+
+        /*
+        for (i in ast.children[1].children) {
+            scope.add(i.children[0].head.value, 0)
+        }
+        */
 
         // then we run each statement of the function
         try {
@@ -51,9 +60,11 @@ class Interpreter(val ast: Ast) {
                 walkAst(ast.children[i].children[0])
             }
         } catch (e: ReturnException) {
+            scope.pop()
             return e.returnValue
         }
 
+        scope.pop()
         // if we arrive here, the function hasn't returned any value;
         // a runtime error should be thrown
         throw Error(ErrorType.RUNTIME_ERROR,
@@ -104,6 +115,10 @@ class Interpreter(val ast: Ast) {
         if (ast.head.token == TreeTokenType.IDENTIFIER) {
             return scope.get(ast.head.value)!!
         }
+        if (ast.head.token == TreeTokenType.FUNCTION_CALL) {
+            return runFunction(functionMap[ast.children[0].head.value]!!,
+                createArgumentList(ast))
+        }
 
         // if arrive here we have a situation of number operator number ... number
         var i = 1
@@ -140,5 +155,13 @@ class Interpreter(val ast: Ast) {
         }
 
         return map
+    }
+
+    private fun createArgumentList(functionCall: Ast): ArrayList<Int> {
+        val list = ArrayList<Int>()
+        for (i in 1 until functionCall.children.size) {
+            list.add(solveExp(functionCall.children[i]))
+        }
+        return list
     }
 }
