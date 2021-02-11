@@ -19,7 +19,10 @@ import kconan.util.ScopeMap
 // Class that allows to interpret an ast
 class Interpreter(val ast: Ast) {
     private val functionList = getFunctionAst(ast)
+    private val functionMap = createFunctionMap(functionList)
+
     private val scope = getGlobalVariables()
+
 
     // it executes the program (starting from the main() function)
     fun run(ast: Ast) {
@@ -126,5 +129,16 @@ class Interpreter(val ast: Ast) {
 
             else -> 0
         }
+    }
+
+    // we create a map <function id, function AST>
+    private fun createFunctionMap(functionList: ArrayList<Ast>): HashMap<String, Ast> {
+        val map = HashMap<String, Ast>()
+
+        for (i in functionList) {
+            map[i.children[0].head.value] = i
+        }
+
+        return map
     }
 }
