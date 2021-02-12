@@ -1,5 +1,5 @@
 // ParseIf.kt
-// Version 1.0.0
+// Version 1.0.1
 
 package kconan.parser.grammar
 
@@ -17,7 +17,6 @@ import kconan.token.TokenType
 // Children:
 // 0: exp
 // 1: if body
-// [2]: exp
 // [3]: else body
 fun parseIf(i: Int, list: ArrayList<Token>): ParsingResult {
     var i = i

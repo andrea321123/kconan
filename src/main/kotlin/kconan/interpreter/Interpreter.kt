@@ -1,5 +1,5 @@
 // Interpreter.kt
-// Version 1.0.2
+// Version 1.0.3
 
 package kconan.interpreter
 
@@ -46,12 +46,6 @@ class Interpreter(val ast: Ast) {
                 arguments[i])
         }
 
-        /*
-        for (i in ast.children[1].children) {
-            scope.add(i.children[0].head.value, 0)
-        }
-        */
-
         // then we run each statement of the function
         try {
             for (i in 3 until ast.children.size) {
@@ -72,12 +66,31 @@ class Interpreter(val ast: Ast) {
             ast.head.line, ast.head.column)
     }
 
-    fun walkAst(ast: Ast) {
+    private fun walkAst(ast: Ast) {
         // if the statement is a return, throw a ReturnException
         if (ast.head.token == TreeTokenType.RETURN) {
             val returnValue = solveExp(ast.children[0])
             throw ReturnException(returnValue)
         }
+        else if (ast.head.token == TreeTokenType.IF) {
+            val condition = solveExp(ast.children[0])
+
+            if (condition == 1) {
+                walkAst(ast.children[1])
+            }
+
+            // we eventually run the else body
+            if (condition == 0 && ast.children.size == 3) {
+                walkAst(ast.children[2])
+            }
+        }
+        else {
+            // if we arrive there, we call walk ast for each fo the children
+            for (i in ast.children) {
+                walkAst(i)
+            }
+        }
+
     }
 
     // Add to a ScopeMap<Integer> all global variables
@@ -141,6 +154,13 @@ class Interpreter(val ast: Ast) {
             TreeTokenType.MULTIPLICATION -> value1 * value2
             TreeTokenType.DIVISION -> value1 / value2
             TreeTokenType.REMAINDER -> value1 % value2
+
+            TreeTokenType.EQUALS_TO -> if (value1 == value2) 1 else 0
+            TreeTokenType.NOT_EQUALS_TO -> if (value1 != value2) 1 else 0
+            TreeTokenType.LESS_OR_EQUALS -> if (value1 <= value2) 1 else 0
+            TreeTokenType.LESS_THAN -> if (value1 < value2) 1 else 0
+            TreeTokenType.GREATER_OR_EQUALS -> if (value1 >= value2) 1 else 0
+            TreeTokenType.GREATER_THAN -> if (value1 > value2) 1 else 0
 
             else -> 0
         }

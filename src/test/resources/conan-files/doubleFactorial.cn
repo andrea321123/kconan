@@ -1,0 +1,30 @@
+// doubleFactorial.cn
+// factorial function using indirect recursion
+
+fun fact1(n: i32): i32 {
+    if (n == 0) {
+        return 1;
+    }
+    if (n == 1) {
+        return 1;
+    }
+
+    return n * fact2(n -1);
+}
+
+fun fact2(n: i32): i32 {
+    if (n == 0) {
+        return 1;
+    }
+    if (n == 1) {
+        return 1;
+    }
+
+    return n * fact1(n -1);
+}
+
+var b: i32 = 12;
+
+fun main(): i32 {
+    return fact1(b);
+}
