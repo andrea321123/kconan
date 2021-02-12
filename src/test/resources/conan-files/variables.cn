@@ -1,0 +1,15 @@
+var global1: i32 = 32;
+var global2: i32 = 16;
+
+fun foo(a: i32): i32 {
+    global1 = 10;
+    var global1: i32 = a;
+    global1 = global1 -1;
+    return global1 -1;      // should return a -2
+}
+
+fun main(): i32 {
+    var a: i32 = foo(global2);
+    return a + global1;     // should return 24
+}
+

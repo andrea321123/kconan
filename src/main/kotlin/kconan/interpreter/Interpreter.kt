@@ -1,5 +1,5 @@
 // Interpreter.kt
-// Version 1.0.3
+// Version 1.0.4
 
 package kconan.interpreter
 
@@ -26,7 +26,7 @@ class Interpreter(val ast: Ast) {
 
 
     // it executes the program (starting from the main() function)
-    fun run(ast: Ast) {
+    fun run() {
         for (i in functionList) {
             if (i.children[0].head.value == "main") {
                 runFunction(i, ArrayList())
@@ -67,30 +67,37 @@ class Interpreter(val ast: Ast) {
     }
 
     private fun walkAst(ast: Ast) {
-        // if the statement is a return, throw a ReturnException
-        if (ast.head.token == TreeTokenType.RETURN) {
-            val returnValue = solveExp(ast.children[0])
-            throw ReturnException(returnValue)
-        }
-        else if (ast.head.token == TreeTokenType.IF) {
-            val condition = solveExp(ast.children[0])
-
-            if (condition == 1) {
-                walkAst(ast.children[1])
+        when (ast.head.token) {
+            TreeTokenType.RETURN -> {
+                // if the statement is a return, throw a ReturnException
+                val returnValue = solveExp(ast.children[0])
+                throw ReturnException(returnValue)
             }
+            TreeTokenType.IF -> {
+                val condition = solveExp(ast.children[0])
 
-            // we eventually run the else body
-            if (condition == 0 && ast.children.size == 3) {
-                walkAst(ast.children[2])
+                if (condition == 1) {
+                    walkBlock(ast.children[1])
+                }
+
+                // we eventually run the else body
+                if (condition == 0 && ast.children.size == 3) {
+                    walkBlock(ast.children[2])
+                }
+            }
+            TreeTokenType.VAR_ASSIGN -> {
+                scope.set(ast.children[0].head.value, solveExp(ast.children[1]))
+            }
+            TreeTokenType.VAR_INIT -> {
+                scope.add(ast.children[0].head.value, solveExp(ast.children[2]))
+            }
+            else -> {
+                // if we arrive there, we call walk ast for each fo the children
+                for (i in ast.children) {
+                    walkAst(i)
+                }
             }
         }
-        else {
-            // if we arrive there, we call walk ast for each fo the children
-            for (i in ast.children) {
-                walkAst(i)
-            }
-        }
-
     }
 
     // Add to a ScopeMap<Integer> all global variables
@@ -183,5 +190,21 @@ class Interpreter(val ast: Ast) {
             list.add(solveExp(functionCall.children[i]))
         }
         return list
+    }
+
+    // run a if/else/while block (that creates a new scope
+    private fun walkBlock(block: Ast) {
+        scope.push()
+        try {
+            walkAst(block)
+        } catch (e: ReturnException) {
+            // if a value is returned from the block,
+            // we still have to pop the scope,
+            // then throw the exception
+            scope.pop()
+            throw e
+        }
+
+        scope.pop()
     }
 }
