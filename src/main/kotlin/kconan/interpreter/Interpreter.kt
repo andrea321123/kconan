@@ -1,5 +1,5 @@
 // Interpreter.kt
-// Version 1.0.4
+// Version 1.0.5
 
 package kconan.interpreter
 
@@ -83,6 +83,28 @@ class Interpreter(val ast: Ast) {
                 // we eventually run the else body
                 if (condition == 0 && ast.children.size == 3) {
                     walkBlock(ast.children[2])
+                }
+            }
+            TreeTokenType.WHILE -> {
+                var condition = solveExp(ast.children[0])
+
+                while (condition == 1) {
+                    scope.push()
+                    try {
+                        for (i in 1 until ast.children.size) {
+                            walkAst(ast.children[i])
+                        }
+                    } catch (e: ReturnException) {
+                        // if a value is returned from the block,
+                        // we still have to pop the scope,
+                        // then throw the exception
+                        scope.pop()
+                        throw e
+                    }
+                    scope.pop()
+
+                    // we chek the condition
+                    condition = solveExp(ast.children[0])
                 }
             }
             TreeTokenType.VAR_ASSIGN -> {
@@ -192,7 +214,7 @@ class Interpreter(val ast: Ast) {
         return list
     }
 
-    // run a if/else/while block (that creates a new scope
+    // run a if/else block (that creates a new scope)
     private fun walkBlock(block: Ast) {
         scope.push()
         try {

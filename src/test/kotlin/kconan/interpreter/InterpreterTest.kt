@@ -1,5 +1,5 @@
 // Interpreter.kt
-// Version 1.0.5
+// Version 1.0.6
 
 package kconan.interpreter
 
@@ -66,5 +66,14 @@ class InterpreterTest {
         resolveNames(tree)
         val test = Interpreter(tree)
         assertEquals(24, test.runFunction(test.functionMap["main"]!!, ArrayList()))
+    }
+
+    @Test
+    fun runTest7() {
+        val source = readFile("${conanSourcesDirectory}/while.cn")
+        val tree = parse(doLexing(source)).tree
+        resolveNames(tree)
+        val test = Interpreter(tree)
+        assertEquals(12, test.runFunction(test.functionMap["main"]!!, ArrayList()))
     }
 }
