@@ -1,0 +1,11 @@
+var global: i32 = 0;
+
+fun foo(): i32 {
+    global = 10;
+    return 23;
+}
+
+fun main(): i32 {
+    foo();
+    return global;
+}

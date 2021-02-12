@@ -1,5 +1,5 @@
 // Interpreter.kt
-// Version 1.0.5
+// Version 1.0.6
 
 package kconan.interpreter
 
@@ -112,6 +112,10 @@ class Interpreter(val ast: Ast) {
             }
             TreeTokenType.VAR_INIT -> {
                 scope.add(ast.children[0].head.value, solveExp(ast.children[2]))
+            }
+            TreeTokenType.FUNCTION_CALL -> {
+                runFunction(functionMap[ast.children[0].head.value]!!,
+                    createArgumentList(ast))
             }
             else -> {
                 // if we arrive there, we call walk ast for each fo the children
