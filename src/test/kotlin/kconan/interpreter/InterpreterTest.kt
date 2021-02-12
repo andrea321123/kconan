@@ -1,10 +1,8 @@
 // Interpreter.kt
-// Version 1.0.3
+// Version 1.0.4
 
 package kconan.interpreter
 
-import kconan.error.Error
-import kconan.error.ErrorType
 import kconan.io.readFile
 import kconan.lexer.doLexing
 import kconan.parser.grammar.parse
@@ -50,5 +48,14 @@ class InterpreterTest {
         resolveNames(tree)
         val test = Interpreter(tree)
         assertEquals(479001600, test.runFunction(test.functionMap["main"]!!, ArrayList()))
+    }
+
+    @Test
+    fun runTest5() {
+        val source = readFile("${conanSourcesDirectory}/fibonacciI32.cn")
+        val tree = parse(doLexing(source)).tree
+        resolveNames(tree)
+        val test = Interpreter(tree)
+        assertEquals(55, test.runFunction(test.functionMap["main"]!!, ArrayList()))
     }
 }

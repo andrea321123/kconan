@@ -1,0 +1,15 @@
+// returns the nth number of Fibonacci sequence
+// recursive algorithm
+fun fiboRec(n: i32): i32 {
+    // exit condition
+    if (n <= 1) {
+        return n;
+    }
+
+    return fiboRec(n -1) + fiboRec(n -2);
+}
+
+
+fun main(): i32 {
+    return fiboRec(10);
+}
