@@ -1,11 +1,12 @@
 // Interpreter.kt
-// Version 1.0.6
+// Version 1.0.7
 
 package kconan.interpreter
 
 import kconan.error.Error
 import kconan.error.ErrorType
 import kconan.parser.Ast
+import kconan.parser.token.TreeToken
 import kconan.parser.token.TreeTokenType
 import kconan.semantic.getFunctionAst
 import kconan.util.ScopeMap
@@ -38,6 +39,11 @@ class Interpreter(val ast: Ast) {
     //In kconan 1.0, all functions must return an i32 (kotlin Int)
     // The return value will be given by throwing a ReturnException
     fun runFunction(ast: Ast, arguments: ArrayList<Int>): Int {
+        // we first check if it is a default function
+        if (ast.head.token == TreeTokenType.DEFAULT_FUNCTION) {
+            return runDefaultFunction(ast.head.value, arguments)
+        }
+
         // a function creates a scope with the arguments
         scope.push()
         for (i in 0 until ast.children[1].children.size) {
@@ -155,15 +161,15 @@ class Interpreter(val ast: Ast) {
         if (ast.head.token == TreeTokenType.INTEGER_CONSTANT) {
             return Integer.parseInt(ast.head.value)
         }
+        if (ast.head.token == TreeTokenType.FUNCTION_CALL) {
+            return runFunction(functionMap[ast.children[0].head.value]!!,
+                createArgumentList(ast))
+        }
         if (ast.children.size == 1) {
             return solveExp(ast.children[0])
         }
         if (ast.head.token == TreeTokenType.IDENTIFIER) {
             return scope.get(ast.head.value)!!
-        }
-        if (ast.head.token == TreeTokenType.FUNCTION_CALL) {
-            return runFunction(functionMap[ast.children[0].head.value]!!,
-                createArgumentList(ast))
         }
 
         // if arrive here we have a situation of number operator number ... number
@@ -207,6 +213,11 @@ class Interpreter(val ast: Ast) {
             map[i.children[0].head.value] = i
         }
 
+        // we add default functions to the map
+        for (i in defaultFunctionSet) {
+            val ast = Ast(TreeToken(TreeTokenType.DEFAULT_FUNCTION, i, 0, 0))
+            map[i] = ast
+        }
         return map
     }
 

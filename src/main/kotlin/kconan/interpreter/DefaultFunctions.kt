@@ -1,5 +1,5 @@
 // DefaultFunctions.kt
-// Version 1.0.0
+// Version 1.0.1
 
 package kconan.interpreter
 
@@ -17,18 +17,26 @@ val defaultFunctionsArguments = mapOf(
 )
 
 // run the function
-fun runDefaultFunction() {
+fun runDefaultFunction(name: String, arguments: ArrayList<Int>): Int {
+    return when (name) {
+        "print" -> defaultPrint(arguments)
+        "println" -> defaultPrintln(arguments)
+        "input" -> defaultInput(arguments)
 
+        else -> 0
+    }
 }
 
-fun defaultPrint(): Int {
+fun defaultPrint(arguments: ArrayList<Int>): Int {
+    print(arguments[0])
     return 1
 }
 
-fun defaultPrintln(): Int {
+fun defaultPrintln(arguments: ArrayList<Int>): Int {
+    println(arguments[0])
     return 1
 }
 
-fun defaultInput(): Int {
-    return 1
+fun defaultInput(arguments: ArrayList<Int>): Int {
+    return Integer.parseInt(readLine())   // because kconan 1.0 only supports i32 type
 }
