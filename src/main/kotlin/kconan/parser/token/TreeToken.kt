@@ -1,5 +1,5 @@
 // Token.kt
-// Version 1.0.14
+// Version 1.0.15
 
 package kconan.parser.token
 
@@ -78,4 +78,6 @@ private val treeTokenToInfo = mapOf(
     TreeTokenType.F32_TYPE to "f32 type",
     TreeTokenType.F64_TYPE to "f64 type",
     TreeTokenType.CHAR_TYPE to "char type",
-    TreeTokenType.BOOL_TYPE to "bool type")
+    TreeTokenType.BOOL_TYPE to "bool type",
+
+    TreeTokenType.DEFAULT_FUNCTION to "default function")
