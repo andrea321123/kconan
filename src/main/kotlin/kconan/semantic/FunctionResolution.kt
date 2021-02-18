@@ -1,16 +1,22 @@
 // FunctionResolution.kt
-// Version 1.0.1
+// Version 1.0.2
 
 package kconan.semantic
 
 import kconan.error.Error
 import kconan.error.ErrorType
+import kconan.interpreter.defaultFunctionSet
+import kconan.interpreter.defaultFunctionsArguments
 import kconan.parser.Ast
 import kconan.parser.token.TreeTokenType
 
 fun resolveFunctionsNames(ast: Ast) {
     val container = getFunctionDeclarations(ast)
 
+    // we add default functions to the container
+    for (i in defaultFunctionSet) {
+        container.add(i)
+    }
     checkFunctionIdDeclared(ast, container)
     checkFunctionCallArgumentsNumber(ast)
 }
@@ -21,6 +27,10 @@ fun checkFunctionCallArgumentsNumber(ast: Ast) {
     // we create a map function name -> number of parameters
     val map = createMap(ast)
 
+    // we add default functions to the mao
+    for (i in defaultFunctionsArguments) {
+        map[i.key] = i.value
+    }
     checkArgumentsNumber(ast, map)
 }
 
