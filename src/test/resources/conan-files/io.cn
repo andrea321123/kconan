@@ -1,0 +1,35 @@
+// prints the numbers of the Collatz sequence generated
+// from an input value
+
+fun main(): i32 {
+    var in: i32 = input();
+    println(isPrime(in));
+    return 1;
+}
+
+fun isPrime(n: i32): i32 {
+    var i: i32 = 2;
+
+    while (i < n) {
+        if (n % i == 0) {
+            return 0;
+        }
+        i = i +1;
+    }
+
+    return 1;
+}
+
+fun collatz(n: i32): i32 {
+    println(n);
+
+    // exit condition
+    if (n == 1) {
+        return 1;
+    }
+
+    if (n % 2 == 0) {
+        return collatz(n /2);
+    }
+    return collatz(3*n +1);
+}
