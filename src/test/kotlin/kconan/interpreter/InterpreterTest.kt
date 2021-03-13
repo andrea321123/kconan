@@ -1,5 +1,5 @@
 // Interpreter.kt
-// Version 1.0.7
+// Version 1.0.8
 
 package kconan.interpreter
 
@@ -19,7 +19,7 @@ class InterpreterTest {
         val tree = parse(doLexing(source)).tree
         val test = Interpreter(tree)
         val exp = tree.children[0].children[3].children[0].children[0]
-        assertEquals(100, test.solveExp(exp))
+        assertEquals(100, test.solveExp(exp).value)
     }
 
     @Test
@@ -28,61 +28,61 @@ class InterpreterTest {
         val tree = parse(doLexing(source)).tree
         val test = Interpreter(tree)
         val exp = tree.children[1].children[0].children[3].children[0].children[0]
-        assertEquals(100, test.solveExp(exp))
+        assertEquals(100, test.solveExp(exp).value)
     }
 
 
     @Test
-    fun runTest3() {
+    fun runTest1() {
         val source = "var a:i32=32; fun main():i32{return foo(a -1) *2;} fun foo(b: i32):i32{return b-5;}"
         val tree = parse(doLexing(source)).tree
         resolveNames(tree)
         val test = Interpreter(tree)
-        assertEquals(52, test.runFunction(test.functionMap["main"]!!, ArrayList()))
+        assertEquals(52, test.runFunction(test.functionMap["main"]!!, ArrayList()).value)
     }
 
     @Test
-    fun runTest4() {
+    fun runTest2() {
         val source = readFile("${conanSourcesDirectory}/doubleFactorial.cn")
         val tree = parse(doLexing(source)).tree
         resolveNames(tree)
         val test = Interpreter(tree)
-        assertEquals(479001600, test.runFunction(test.functionMap["main"]!!, ArrayList()))
+        assertEquals(479001600, test.runFunction(test.functionMap["main"]!!, ArrayList()).value)
     }
 
     @Test
-    fun runTest5() {
+    fun runTest3() {
         val source = readFile("${conanSourcesDirectory}/fibonacciI32.cn")
         val tree = parse(doLexing(source)).tree
         resolveNames(tree)
         val test = Interpreter(tree)
-        assertEquals(55, test.runFunction(test.functionMap["main"]!!, ArrayList()))
+        assertEquals(55, test.runFunction(test.functionMap["main"]!!, ArrayList()).value)
     }
 
     @Test
-    fun runTest6() {
+    fun runTest4() {
         val source = readFile("${conanSourcesDirectory}/variables.cn")
         val tree = parse(doLexing(source)).tree
         resolveNames(tree)
         val test = Interpreter(tree)
-        assertEquals(24, test.runFunction(test.functionMap["main"]!!, ArrayList()))
+        assertEquals(24, test.runFunction(test.functionMap["main"]!!, ArrayList()).value)
     }
 
     @Test
-    fun runTest7() {
+    fun runTest5() {
         val source = readFile("${conanSourcesDirectory}/while.cn")
         val tree = parse(doLexing(source)).tree
         resolveNames(tree)
         val test = Interpreter(tree)
-        assertEquals(12, test.runFunction(test.functionMap["main"]!!, ArrayList()))
+        assertEquals(12, test.runFunction(test.functionMap["main"]!!, ArrayList()).value)
     }
 
     @Test
-    fun runTest8() {
+    fun runTest6() {
         val source = readFile("${conanSourcesDirectory}/variables2.cn")
         val tree = parse(doLexing(source)).tree
         resolveNames(tree)
         val test = Interpreter(tree)
-        assertEquals(10, test.runFunction(test.functionMap["main"]!!, ArrayList()))
+        assertEquals(10, test.runFunction(test.functionMap["main"]!!, ArrayList()).value)
     }
 }
