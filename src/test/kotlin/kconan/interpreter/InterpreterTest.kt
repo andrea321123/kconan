@@ -1,5 +1,5 @@
 // Interpreter.kt
-// Version 1.0.8
+// Version 1.0.9
 
 package kconan.interpreter
 
@@ -19,7 +19,7 @@ class InterpreterTest {
         val tree = parse(doLexing(source)).tree
         val test = Interpreter(tree)
         val exp = tree.children[0].children[3].children[0].children[0]
-        assertEquals(100, test.solveExp(exp).value)
+        assertEquals(100, test.expSolver.solveExp(exp).value)
     }
 
     @Test
@@ -28,7 +28,7 @@ class InterpreterTest {
         val tree = parse(doLexing(source)).tree
         val test = Interpreter(tree)
         val exp = tree.children[1].children[0].children[3].children[0].children[0]
-        assertEquals(100, test.solveExp(exp).value)
+        assertEquals(100, test.expSolver.solveExp(exp).value)
     }
 
 

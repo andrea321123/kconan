@@ -1,5 +1,5 @@
 // Interpreter.kt
-// Version 1.0.8
+// Version 1.0.9
 
 package kconan.interpreter
 
@@ -20,11 +20,11 @@ import kconan.util.ScopeMap
 
 // Class that allows to interpret an ast
 class Interpreter(val ast: Ast) {
+    val expSolver = ExpSolver(this)
+
     private val functionList = getFunctionAst(ast)
     val functionMap = createFunctionMap(functionList)
-
-    private val scope = getGlobalVariables()
-
+    val scope = getGlobalVariables()
 
     // it executes the program (starting from the main() function)
     fun run() {
@@ -76,11 +76,11 @@ class Interpreter(val ast: Ast) {
         when (ast.head.token) {
             TreeTokenType.RETURN -> {
                 // if the statement is a return, throw a ReturnException
-                val returnValue = solveExp(ast.children[0])
+                val returnValue = expSolver.solveExp(ast.children[0])
                 throw ReturnException(returnValue)
             }
             TreeTokenType.IF -> {
-                val condition = solveExp(ast.children[0])
+                val condition = expSolver.solveExp(ast.children[0])
 
                 if ((condition.value as Int) == 1) {
                     walkBlock(ast.children[1])
@@ -91,7 +91,7 @@ class Interpreter(val ast: Ast) {
                 }
             }
             TreeTokenType.WHILE -> {
-                var condition = solveExp(ast.children[0])
+                var condition = expSolver.solveExp(ast.children[0])
 
                 while ((condition.value as Int) == 1) {
                     scope.push()
@@ -109,14 +109,14 @@ class Interpreter(val ast: Ast) {
                     scope.pop()
 
                     // we chek the condition
-                    condition = solveExp(ast.children[0])
+                    condition = expSolver.solveExp(ast.children[0])
                 }
             }
             TreeTokenType.VAR_ASSIGN -> {
-                scope.set(ast.children[0].head.value, solveExp(ast.children[1]))
+                scope.set(ast.children[0].head.value, expSolver.solveExp(ast.children[1]))
             }
             TreeTokenType.VAR_INIT -> {
-                scope.add(ast.children[0].head.value, solveExp(ast.children[2]))
+                scope.add(ast.children[0].head.value, expSolver.solveExp(ast.children[2]))
             }
             TreeTokenType.FUNCTION_CALL -> {
                 runFunction(functionMap[ast.children[0].head.value]!!,
@@ -141,7 +141,7 @@ class Interpreter(val ast: Ast) {
             // the other is another program
             if (currentNode.children[0].head.token == TreeTokenType.VAR_INIT) {
                 map.add(currentNode.children[0].children[0].head.value,
-                    solveExp(currentNode.children[0].children[2].children[0]))
+                    expSolver.solveExp(currentNode.children[0].children[2].children[0]))
             }
             currentNode = currentNode.children[1]
         }
@@ -149,219 +149,13 @@ class Interpreter(val ast: Ast) {
         // we resolve the last part of the program
         if (currentNode.children[0].head.token == TreeTokenType.VAR_INIT) {
             map.add(currentNode.children[0].children[0].head.value,
-                solveExp(currentNode.children[0].children[0].children[2]))
+                expSolver.solveExp(currentNode.children[0].children[0].children[2]))
         }
 
         return map
     }
 
-    // Evaluates an expression
-    fun solveExp(ast: Ast): Variable {
-        if (ast.head.token == TreeTokenType.INTEGER_CONSTANT) {
-            return Variable(VarTypeEnum.I32, Integer.parseInt(ast.head.value))
-        }
-        if (ast.head.token == TreeTokenType.FUNCTION_CALL) {
-            return runFunction(functionMap[ast.children[0].head.value]!!,
-                createArgumentList(ast))
-        }
-        if (ast.children.size == 1) {
-            return solveExp(ast.children[0])
-        }
-        if (ast.head.token == TreeTokenType.IDENTIFIER) {
-            return scope.get(ast.head.value)!!
-        }
 
-        // if arrive here we have a situation of number operator number ... number
-        var i = 1
-        var tmp = solveExp(ast.children[0])     // store the temporary result
-        while (i < ast.children.size) {
-            tmp = operator(tmp,
-                ast.children[i],
-                solveExp(ast.children[i +1]))
-            i += 2
-        }
-
-        return tmp
-    }
-
-    // apply the [operator] on [value1] and [value2]
-    private fun operator(var1: Variable, operator: Ast, var2: Variable): Variable {
-        val value1 = var1.value
-        val value2 = var2.value
-
-        when (operator.head.token) {
-            TreeTokenType.ADDITION -> {
-                return when (var1.type) {
-                    VarTypeEnum.I8 -> Variable(VarTypeEnum.I8, (value1 as Byte) + (value2 as Byte))
-                    VarTypeEnum.I32 -> Variable(VarTypeEnum.I32,(value1 as Int) + (value2 as Int))
-                    VarTypeEnum.I64 -> Variable(VarTypeEnum.I64,(value1 as Long) + (value2 as Long))
-                }
-            }
-            TreeTokenType.SUBTRACTION -> {
-                return when (var1.type) {
-                    VarTypeEnum.I8 -> Variable(VarTypeEnum.I8, (value1 as Byte) - (value2 as Byte))
-                    VarTypeEnum.I32 -> Variable(VarTypeEnum.I32,(value1 as Int) - (value2 as Int))
-                    VarTypeEnum.I64 -> Variable(VarTypeEnum.I64,(value1 as Long) - (value2 as Long))
-                }
-            }
-            TreeTokenType.MULTIPLICATION -> {
-                return when (var1.type) {
-                    VarTypeEnum.I8 -> Variable(VarTypeEnum.I8, (value1 as Byte) * (value2 as Byte))
-                    VarTypeEnum.I32 -> Variable(VarTypeEnum.I32,(value1 as Int) * (value2 as Int))
-                    VarTypeEnum.I64 -> Variable(VarTypeEnum.I64,(value1 as Long) * (value2 as Long))
-                }
-            }
-            TreeTokenType.DIVISION -> {
-                return when (var1.type) {
-                    VarTypeEnum.I8 -> Variable(VarTypeEnum.I8, (value1 as Byte) / (value2 as Byte))
-                    VarTypeEnum.I32 -> Variable(VarTypeEnum.I32,(value1 as Int) / (value2 as Int))
-                    VarTypeEnum.I64 -> Variable(VarTypeEnum.I64,(value1 as Long) / (value2 as Long))
-                }
-            }
-            TreeTokenType.REMAINDER -> {
-                return when (var1.type) {
-                    VarTypeEnum.I8 -> Variable(VarTypeEnum.I8, (value1 as Byte) % (value2 as Byte))
-                    VarTypeEnum.I32 -> Variable(VarTypeEnum.I32,(value1 as Int) % (value2 as Int))
-                    VarTypeEnum.I64 -> Variable(VarTypeEnum.I64,(value1 as Long) % (value2 as Long))
-                }
-            }
-
-            TreeTokenType.EQUALS_TO -> {
-                return when (var1.type) {
-                    VarTypeEnum.I8 -> {
-                        if ((value1 as Byte) == (value2 as Byte))
-                            Variable(VarTypeEnum.I8, 1)
-                        else
-                            Variable(VarTypeEnum.I8, 0)
-                    }
-                    VarTypeEnum.I32 -> {
-                        if ((value1 as Int) == (value2 as Int))
-                            Variable(VarTypeEnum.I32, 1)
-                        else
-                            Variable(VarTypeEnum.I32, 0)
-                    }
-                    VarTypeEnum.I64 -> {
-                        if ((value1 as Long) == (value2 as Long))
-                            Variable(VarTypeEnum.I64, 1)
-                        else
-                            Variable(VarTypeEnum.I64, 0)
-                    }
-                }
-            }
-            TreeTokenType.NOT_EQUALS_TO -> {
-                return when (var1.type) {
-                    VarTypeEnum.I8 -> {
-                        if ((value1 as Byte) != (value2 as Byte))
-                            Variable(VarTypeEnum.I8, 1)
-                        else
-                            Variable(VarTypeEnum.I8, 0)
-                    }
-                    VarTypeEnum.I32 -> {
-                        if ((value1 as Int) != (value2 as Int))
-                            Variable(VarTypeEnum.I32, 1)
-                        else
-                            Variable(VarTypeEnum.I32, 0)
-                    }
-                    VarTypeEnum.I64 -> {
-                        if ((value1 as Long) != (value2 as Long))
-                            Variable(VarTypeEnum.I64, 1)
-                        else
-                            Variable(VarTypeEnum.I64, 0)
-                    }
-                }
-            }
-            TreeTokenType.LESS_OR_EQUALS -> {
-                return when (var1.type) {
-                    VarTypeEnum.I8 -> {
-                        if ((value1 as Byte) <= (value2 as Byte))
-                            Variable(VarTypeEnum.I8, 1)
-                        else
-                            Variable(VarTypeEnum.I8, 0)
-                    }
-                    VarTypeEnum.I32 -> {
-                        if ((value1 as Int) <= (value2 as Int))
-                            Variable(VarTypeEnum.I32, 1)
-                        else
-                            Variable(VarTypeEnum.I32, 0)
-                    }
-                    VarTypeEnum.I64 -> {
-                        if ((value1 as Long) <= (value2 as Long))
-                            Variable(VarTypeEnum.I64, 1)
-                        else
-                            Variable(VarTypeEnum.I64, 0)
-                    }
-                }
-            }
-            TreeTokenType.LESS_THAN -> {
-                return when (var1.type) {
-                    VarTypeEnum.I8 -> {
-                        if ((value1 as Byte) < (value2 as Byte))
-                            Variable(VarTypeEnum.I8, 1)
-                        else
-                            Variable(VarTypeEnum.I8, 0)
-                    }
-                    VarTypeEnum.I32 -> {
-                        if ((value1 as Int) < (value2 as Int))
-                            Variable(VarTypeEnum.I32, 1)
-                        else
-                            Variable(VarTypeEnum.I32, 0)
-                    }
-                    VarTypeEnum.I64 -> {
-                        if ((value1 as Long) < (value2 as Long))
-                            Variable(VarTypeEnum.I64, 1)
-                        else
-                            Variable(VarTypeEnum.I64, 0)
-                    }
-                }
-            }
-            TreeTokenType.GREATER_OR_EQUALS -> {
-                return when (var1.type) {
-                    VarTypeEnum.I8 -> {
-                        if ((value1 as Byte) >= (value2 as Byte))
-                            Variable(VarTypeEnum.I8, 1)
-                        else
-                            Variable(VarTypeEnum.I8, 0)
-                    }
-                    VarTypeEnum.I32 -> {
-                        if ((value1 as Int) >= (value2 as Int))
-                            Variable(VarTypeEnum.I32, 1)
-                        else
-                            Variable(VarTypeEnum.I32, 0)
-                    }
-                    VarTypeEnum.I64 -> {
-                        if ((value1 as Long) >= (value2 as Long))
-                            Variable(VarTypeEnum.I64, 1)
-                        else
-                            Variable(VarTypeEnum.I64, 0)
-                    }
-                }
-            }
-            TreeTokenType.GREATER_THAN -> {
-                return when (var1.type) {
-                    VarTypeEnum.I8 -> {
-                        if ((value1 as Byte) > (value2 as Byte))
-                            Variable(VarTypeEnum.I8, 1)
-                        else
-                            Variable(VarTypeEnum.I8, 0)
-                    }
-                    VarTypeEnum.I32 -> {
-                        if ((value1 as Int) > (value2 as Int))
-                            Variable(VarTypeEnum.I32, 1)
-                        else
-                            Variable(VarTypeEnum.I32, 0)
-                    }
-                    VarTypeEnum.I64 -> {
-                        if ((value1 as Long) > (value2 as Long))
-                            Variable(VarTypeEnum.I64, 1)
-                        else
-                            Variable(VarTypeEnum.I64, 0)
-                    }
-                }
-            }
-
-            else -> return Variable(VarTypeEnum.I8, 0)
-        }
-    }
 
     // we create a map <function id, function AST>
     private fun createFunctionMap(functionList: ArrayList<Ast>): HashMap<String, Ast> {
@@ -379,10 +173,10 @@ class Interpreter(val ast: Ast) {
         return map
     }
 
-    private fun createArgumentList(functionCall: Ast): ArrayList<Variable> {
+    fun createArgumentList(functionCall: Ast): ArrayList<Variable> {
         val list = ArrayList<Variable>()
         for (i in 1 until functionCall.children.size) {
-            list.add(solveExp(functionCall.children[i]))
+            list.add(expSolver.solveExp(functionCall.children[i]))
         }
         return list
     }
