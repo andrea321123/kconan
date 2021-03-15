@@ -1,9 +1,10 @@
 // ExpSolver.kt
-// Version 1.0.0
+// Version 1.0.1
 
 package kconan.interpreter
 
 import kconan.parser.Ast
+import kconan.parser.grammar.expression.operators
 import kconan.parser.token.TreeTokenType
 import kconan.util.ScopeMap
 
@@ -18,24 +19,17 @@ class ExpSolver(val interpreter: Interpreter) {
             return interpreter.runFunction(interpreter.functionMap[ast.children[0].head.value]!!,
                 interpreter.createArgumentList(ast))
         }
-        if (ast.children.size == 1) {
-            return solveExp(ast.children[0])
-        }
         if (ast.head.token == TreeTokenType.IDENTIFIER) {
             return interpreter.scope.get(ast.head.value)!!
         }
-
-        // if arrive here we have a situation of number operator number ... number
-        var i = 1
-        var tmp = solveExp(ast.children[0])     // store the temporary result
-        while (i < ast.children.size) {
-            tmp = operator(tmp,
-                ast.children[i],
-                solveExp(ast.children[i +1]))
-            i += 2
+        if (operators.contains(ast.head.token)) {
+            return operator(solveExp(ast.children[0]),
+                ast,
+                solveExp(ast.children[1]))
         }
-
-        return tmp
+        else {
+            return solveExp(ast.children[0])
+        }
     }
 
     // apply the [operator] on [value1] and [value2]
