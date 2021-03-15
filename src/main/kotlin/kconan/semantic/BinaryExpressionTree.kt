@@ -1,9 +1,10 @@
 // BinaryExpressionTree.kt
-// Version 1.0.0
+// Version 1.0.1
 
 package kconan.semantic
 
 import kconan.parser.Ast
+import kconan.parser.grammar.expression.removeRedundant
 import kconan.parser.token.TreeToken
 import kconan.parser.token.TreeTokenType
 
@@ -20,6 +21,9 @@ fun convert(ast: Ast) {
             convert(ast.children[i])
         }
     }
+
+    // we remove useless Exp nodes
+    removeRedundant(ast)
 }
 
 // Return a binary expression tree from an equivalent expression tree into
