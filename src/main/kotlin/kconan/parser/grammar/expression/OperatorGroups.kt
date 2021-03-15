@@ -1,5 +1,5 @@
 // OperatorGroups.kt
-// Version 1.0.1
+// Version 1.0.2
 
 package kconan.parser.grammar.expression
 
@@ -22,3 +22,4 @@ val cOperators = setOf(
     TreeTokenType.LESS_THAN,
     TreeTokenType.LESS_OR_EQUALS)
 
+val operators = pOperators + sOperators + cOperators
