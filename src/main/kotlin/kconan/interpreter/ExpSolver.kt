@@ -1,12 +1,11 @@
 // ExpSolver.kt
-// Version 1.0.1
+// Version 1.0.2
 
 package kconan.interpreter
 
 import kconan.parser.Ast
 import kconan.parser.grammar.expression.operators
 import kconan.parser.token.TreeTokenType
-import kconan.util.ScopeMap
 
 // Class that solves AST expression (will be embedded in Interpreter class)
 class ExpSolver(val interpreter: Interpreter) {
@@ -43,6 +42,7 @@ class ExpSolver(val interpreter: Interpreter) {
                     VarTypeEnum.I8 -> Variable(VarTypeEnum.I8, (value1 as Byte) + (value2 as Byte))
                     VarTypeEnum.I32 -> Variable(VarTypeEnum.I32,(value1 as Int) + (value2 as Int))
                     VarTypeEnum.I64 -> Variable(VarTypeEnum.I64,(value1 as Long) + (value2 as Long))
+                    VarTypeEnum.F32 -> Variable(VarTypeEnum.I64,(value1 as Float) + (value2 as Float))
                 }
             }
             TreeTokenType.SUBTRACTION -> {
@@ -50,6 +50,7 @@ class ExpSolver(val interpreter: Interpreter) {
                     VarTypeEnum.I8 -> Variable(VarTypeEnum.I8, (value1 as Byte) - (value2 as Byte))
                     VarTypeEnum.I32 -> Variable(VarTypeEnum.I32,(value1 as Int) - (value2 as Int))
                     VarTypeEnum.I64 -> Variable(VarTypeEnum.I64,(value1 as Long) - (value2 as Long))
+                    VarTypeEnum.F32 -> Variable(VarTypeEnum.I64,(value1 as Float) - (value2 as Float))
                 }
             }
             TreeTokenType.MULTIPLICATION -> {
@@ -57,6 +58,7 @@ class ExpSolver(val interpreter: Interpreter) {
                     VarTypeEnum.I8 -> Variable(VarTypeEnum.I8, (value1 as Byte) * (value2 as Byte))
                     VarTypeEnum.I32 -> Variable(VarTypeEnum.I32,(value1 as Int) * (value2 as Int))
                     VarTypeEnum.I64 -> Variable(VarTypeEnum.I64,(value1 as Long) * (value2 as Long))
+                    VarTypeEnum.F32 -> Variable(VarTypeEnum.I64,(value1 as Float) * (value2 as Float))
                 }
             }
             TreeTokenType.DIVISION -> {
@@ -64,6 +66,7 @@ class ExpSolver(val interpreter: Interpreter) {
                     VarTypeEnum.I8 -> Variable(VarTypeEnum.I8, (value1 as Byte) / (value2 as Byte))
                     VarTypeEnum.I32 -> Variable(VarTypeEnum.I32,(value1 as Int) / (value2 as Int))
                     VarTypeEnum.I64 -> Variable(VarTypeEnum.I64,(value1 as Long) / (value2 as Long))
+                    VarTypeEnum.F32 -> Variable(VarTypeEnum.I64,(value1 as Float) / (value2 as Float))
                 }
             }
             TreeTokenType.REMAINDER -> {
@@ -71,6 +74,7 @@ class ExpSolver(val interpreter: Interpreter) {
                     VarTypeEnum.I8 -> Variable(VarTypeEnum.I8, (value1 as Byte) % (value2 as Byte))
                     VarTypeEnum.I32 -> Variable(VarTypeEnum.I32,(value1 as Int) % (value2 as Int))
                     VarTypeEnum.I64 -> Variable(VarTypeEnum.I64,(value1 as Long) % (value2 as Long))
+                    VarTypeEnum.F32 -> Variable(VarTypeEnum.I64,(value1 as Float) % (value2 as Float))
                 }
             }
 
@@ -78,9 +82,9 @@ class ExpSolver(val interpreter: Interpreter) {
                 return when (var1.type) {
                     VarTypeEnum.I8 -> {
                         if ((value1 as Byte) == (value2 as Byte))
-                            Variable(VarTypeEnum.I8, 1)
+                            Variable(VarTypeEnum.I32, 1)
                         else
-                            Variable(VarTypeEnum.I8, 0)
+                            Variable(VarTypeEnum.I32, 0)
                     }
                     VarTypeEnum.I32 -> {
                         if ((value1 as Int) == (value2 as Int))
@@ -90,9 +94,15 @@ class ExpSolver(val interpreter: Interpreter) {
                     }
                     VarTypeEnum.I64 -> {
                         if ((value1 as Long) == (value2 as Long))
-                            Variable(VarTypeEnum.I64, 1)
+                            Variable(VarTypeEnum.I32, 1)
                         else
-                            Variable(VarTypeEnum.I64, 0)
+                            Variable(VarTypeEnum.I32, 0)
+                    }
+                    VarTypeEnum.F32 -> {
+                        if ((value1 as Float) == (value2 as Float))
+                            Variable(VarTypeEnum.I32, 1)
+                        else
+                            Variable(VarTypeEnum.I32, 0)
                     }
                 }
             }
@@ -100,9 +110,9 @@ class ExpSolver(val interpreter: Interpreter) {
                 return when (var1.type) {
                     VarTypeEnum.I8 -> {
                         if ((value1 as Byte) != (value2 as Byte))
-                            Variable(VarTypeEnum.I8, 1)
+                            Variable(VarTypeEnum.I32, 1)
                         else
-                            Variable(VarTypeEnum.I8, 0)
+                            Variable(VarTypeEnum.I32, 0)
                     }
                     VarTypeEnum.I32 -> {
                         if ((value1 as Int) != (value2 as Int))
@@ -112,9 +122,15 @@ class ExpSolver(val interpreter: Interpreter) {
                     }
                     VarTypeEnum.I64 -> {
                         if ((value1 as Long) != (value2 as Long))
-                            Variable(VarTypeEnum.I64, 1)
+                            Variable(VarTypeEnum.I32, 1)
                         else
-                            Variable(VarTypeEnum.I64, 0)
+                            Variable(VarTypeEnum.I32, 0)
+                    }
+                    VarTypeEnum.F32 -> {
+                        if ((value1 as Float) != (value2 as Float))
+                            Variable(VarTypeEnum.I32, 1)
+                        else
+                            Variable(VarTypeEnum.I32, 0)
                     }
                 }
             }
@@ -122,9 +138,9 @@ class ExpSolver(val interpreter: Interpreter) {
                 return when (var1.type) {
                     VarTypeEnum.I8 -> {
                         if ((value1 as Byte) <= (value2 as Byte))
-                            Variable(VarTypeEnum.I8, 1)
+                            Variable(VarTypeEnum.I32, 1)
                         else
-                            Variable(VarTypeEnum.I8, 0)
+                            Variable(VarTypeEnum.I32, 0)
                     }
                     VarTypeEnum.I32 -> {
                         if ((value1 as Int) <= (value2 as Int))
@@ -134,9 +150,15 @@ class ExpSolver(val interpreter: Interpreter) {
                     }
                     VarTypeEnum.I64 -> {
                         if ((value1 as Long) <= (value2 as Long))
-                            Variable(VarTypeEnum.I64, 1)
+                            Variable(VarTypeEnum.I32, 1)
                         else
-                            Variable(VarTypeEnum.I64, 0)
+                            Variable(VarTypeEnum.I32, 0)
+                    }
+                    VarTypeEnum.F32 -> {
+                        if ((value1 as Float) <= (value2 as Float))
+                            Variable(VarTypeEnum.I32, 1)
+                        else
+                            Variable(VarTypeEnum.I32, 0)
                     }
                 }
             }
@@ -144,9 +166,9 @@ class ExpSolver(val interpreter: Interpreter) {
                 return when (var1.type) {
                     VarTypeEnum.I8 -> {
                         if ((value1 as Byte) < (value2 as Byte))
-                            Variable(VarTypeEnum.I8, 1)
+                            Variable(VarTypeEnum.I32, 1)
                         else
-                            Variable(VarTypeEnum.I8, 0)
+                            Variable(VarTypeEnum.I32, 0)
                     }
                     VarTypeEnum.I32 -> {
                         if ((value1 as Int) < (value2 as Int))
@@ -156,9 +178,15 @@ class ExpSolver(val interpreter: Interpreter) {
                     }
                     VarTypeEnum.I64 -> {
                         if ((value1 as Long) < (value2 as Long))
-                            Variable(VarTypeEnum.I64, 1)
+                            Variable(VarTypeEnum.I32, 1)
                         else
-                            Variable(VarTypeEnum.I64, 0)
+                            Variable(VarTypeEnum.I32, 0)
+                    }
+                    VarTypeEnum.F32 -> {
+                        if ((value1 as Float) < (value2 as Float))
+                            Variable(VarTypeEnum.I32, 1)
+                        else
+                            Variable(VarTypeEnum.I32, 0)
                     }
                 }
             }
@@ -166,9 +194,9 @@ class ExpSolver(val interpreter: Interpreter) {
                 return when (var1.type) {
                     VarTypeEnum.I8 -> {
                         if ((value1 as Byte) >= (value2 as Byte))
-                            Variable(VarTypeEnum.I8, 1)
+                            Variable(VarTypeEnum.I32, 1)
                         else
-                            Variable(VarTypeEnum.I8, 0)
+                            Variable(VarTypeEnum.I32, 0)
                     }
                     VarTypeEnum.I32 -> {
                         if ((value1 as Int) >= (value2 as Int))
@@ -178,9 +206,15 @@ class ExpSolver(val interpreter: Interpreter) {
                     }
                     VarTypeEnum.I64 -> {
                         if ((value1 as Long) >= (value2 as Long))
-                            Variable(VarTypeEnum.I64, 1)
+                            Variable(VarTypeEnum.I32, 1)
                         else
-                            Variable(VarTypeEnum.I64, 0)
+                            Variable(VarTypeEnum.I32, 0)
+                    }
+                    VarTypeEnum.F32 -> {
+                        if ((value1 as Float) >= (value2 as Float))
+                            Variable(VarTypeEnum.I32, 1)
+                        else
+                            Variable(VarTypeEnum.I32, 0)
                     }
                 }
             }
@@ -188,9 +222,9 @@ class ExpSolver(val interpreter: Interpreter) {
                 return when (var1.type) {
                     VarTypeEnum.I8 -> {
                         if ((value1 as Byte) > (value2 as Byte))
-                            Variable(VarTypeEnum.I8, 1)
+                            Variable(VarTypeEnum.I32, 1)
                         else
-                            Variable(VarTypeEnum.I8, 0)
+                            Variable(VarTypeEnum.I32, 0)
                     }
                     VarTypeEnum.I32 -> {
                         if ((value1 as Int) > (value2 as Int))
@@ -200,14 +234,20 @@ class ExpSolver(val interpreter: Interpreter) {
                     }
                     VarTypeEnum.I64 -> {
                         if ((value1 as Long) > (value2 as Long))
-                            Variable(VarTypeEnum.I64, 1)
+                            Variable(VarTypeEnum.I32, 1)
                         else
-                            Variable(VarTypeEnum.I64, 0)
+                            Variable(VarTypeEnum.I32, 0)
+                    }
+                    VarTypeEnum.F32 -> {
+                        if ((value1 as Float) > (value2 as Float))
+                            Variable(VarTypeEnum.I32, 1)
+                        else
+                            Variable(VarTypeEnum.I32, 0)
                     }
                 }
             }
 
-            else -> return Variable(VarTypeEnum.I8, 0)
+            else -> return Variable(VarTypeEnum.I32, 0)
         }
     }
 
