@@ -1,5 +1,5 @@
 // ExpSolver.kt
-// Version 1.0.2
+// Version 1.0.3
 
 package kconan.interpreter
 
@@ -13,6 +13,9 @@ class ExpSolver(val interpreter: Interpreter) {
     fun solveExp(ast: Ast): Variable {
         if (ast.head.token == TreeTokenType.INTEGER_CONSTANT) {
             return Variable(VarTypeEnum.I32, Integer.parseInt(ast.head.value))
+        }
+        if (ast.head.token == TreeTokenType.FLOAT_CONSTANT) {
+            return Variable(VarTypeEnum.F32, ast.head.value.toFloat())
         }
         if (ast.head.token == TreeTokenType.FUNCTION_CALL) {
             return interpreter.runFunction(interpreter.functionMap[ast.children[0].head.value]!!,
