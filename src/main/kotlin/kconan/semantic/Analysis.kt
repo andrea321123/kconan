@@ -1,13 +1,13 @@
 // SemanticAnalysis.kt
-// Version 1.0.6
+// Version 1.0.7
 
 package kconan.semantic
 
+import kconan.error.Error
 import kconan.error.ErrorType
-import kconan.interpreter.defaultFunctionSet
 import kconan.parser.Ast
-import kconan.parser.token.TreeToken
 import kconan.parser.token.TreeTokenType
+import kconan.parser.token.treeTokenToInfo
 
 // Check that all variables are defined,
 // that there aren't multiple declaration of vars with same id in the same scope and
@@ -22,6 +22,32 @@ fun resolveNames(ast: Ast) {
     }
 }
 
+// kconan 1.0 only supports i32 integer type
+// and only f32 float type
+// i8, u8, i16, u16, u32, i64, u64, f64 are therefore not supported
+// and should raise a compile error
+fun unsupportedTypes(ast: Ast) {
+    if (unsupportedTypesSet.contains(ast.head.token)) {
+        throw Error(ErrorType.COMPILE_ERROR,
+                    "${treeTokenToInfo[ast.head.token]} type not supported",
+                    ast.head.line,
+                    ast.head.column)
+    }
+
+    for (i in 0 until ast.children.size) {
+        unsupportedTypes(ast.children[i])
+    }
+}
+val unsupportedTypesSet = setOf(
+    TreeTokenType.I8_TYPE,
+    TreeTokenType.U8_TYPE,
+    TreeTokenType.I16_TYPE,
+    TreeTokenType.U16_TYPE,
+    TreeTokenType.U32_TYPE,
+    TreeTokenType.I64_TYPE,
+    TreeTokenType.U64_TYPE,
+    TreeTokenType.F64_TYPE
+)
 // Return a SymbolTables data class that holds the
 // global variables table and the functions table
 fun generateSymbolTables(ast: Ast): SymbolTables {
@@ -93,7 +119,7 @@ private fun getGlobalBlocks(ast: Ast, type: TreeTokenType): ScopeContainer<Strin
 
 fun addIdentifier(value: String, container: ScopeContainer<String>) {
     if (container.lastContains(value)) {
-        throw kconan.error.Error(
+        throw Error(
             ErrorType.COMPILE_ERROR,
             "$value declared multiple times")
     }

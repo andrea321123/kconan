@@ -1,5 +1,5 @@
 // AnalysisTest.kt
-// Version 1.0.4
+// Version 1.0.5
 
 package kconan.semantic
 
@@ -32,6 +32,19 @@ class AnalysisTest {
         val source = readFile("${conanSourcesDirectory}scope.cn")
         val tree = parse(doLexing(source)).tree
         resolveNames(tree)
+    }
+
+    @Test
+    fun unsupportedTypesTest() {
+        val source = readFile("${conanSourcesDirectory}scope.cn")
+        val tree = parse(doLexing(source)).tree
+        resolveNames(tree)
+        try {
+            unsupportedTypes(tree)
+            assert(false)
+        } catch (e: Error) {
+            assert(e.toString().contains("f64 type"))
+        }
     }
 
     @Test

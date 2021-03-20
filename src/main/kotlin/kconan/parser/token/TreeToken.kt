@@ -1,5 +1,5 @@
 // Token.kt
-// Version 1.0.15
+// Version 1.0.16
 
 package kconan.parser.token
 
@@ -25,7 +25,7 @@ data class TreeToken(val token: TreeTokenType,
     }
 }
 
-private val treeTokenToInfo = mapOf(
+val treeTokenToInfo = mapOf(
     TreeTokenType.PROGRAM to "program",
     TreeTokenType.VAR_INIT to "variable initialization",
     TreeTokenType.NUMERIC_TYPE to "numeric type",
