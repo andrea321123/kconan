@@ -1,5 +1,5 @@
 // SemanticAnalysis.kt
-// Version 1.0.7
+// Version 1.0.8
 
 package kconan.semantic
 
@@ -48,12 +48,14 @@ val unsupportedTypesSet = setOf(
     TreeTokenType.U64_TYPE,
     TreeTokenType.F64_TYPE
 )
+
 // Return a SymbolTables data class that holds the
 // global variables table and the functions table
 fun generateSymbolTables(ast: Ast): SymbolTables {
     var currentNode = ast
     val functionMap = HashMap<String, Ast>()
-    val variableMap = HashMap<String, Ast>()
+    val globalVarsMap = HashMap<String, Ast>()
+    val localVarsMap = HashMap<String, HashMap <String, TreeTokenType>>()
 
     while (currentNode.children.size == 2) {
         // one child is a function or a global variable,
@@ -62,25 +64,41 @@ fun generateSymbolTables(ast: Ast): SymbolTables {
         val identifier = currentNode.children[0].children[0].head.value
         if (tokenType == TreeTokenType.FUNCTION) {
             functionMap[identifier] = currentNode.children[0]
+            localVarsMap[identifier] = getLocalVars(currentNode.children[0])
         }
         else {      // it is a variable
-            variableMap[identifier] = currentNode.children[0]
+            globalVarsMap[identifier] = currentNode.children[0]
         }
         currentNode = currentNode.children[1]
     }
-
 
     // we resolve the last part of the program
     val tokenType = currentNode.children[0].head.token
     val identifier = currentNode.children[0].children[0].head.value
     if (tokenType == TreeTokenType.FUNCTION) {
         functionMap[identifier] = currentNode.children[0]
+        localVarsMap[identifier] = getLocalVars(currentNode.children[0])
     }
     else {      // it is a variable
-        variableMap[identifier] = currentNode.children[0]
+        globalVarsMap[identifier] = currentNode.children[0]
     }
 
-    return SymbolTables(variableMap, functionMap)
+    return SymbolTables(globalVarsMap, functionMap, localVarsMap)
+}
+
+fun getLocalVars(ast: Ast): HashMap<String, TreeTokenType> {
+    val map = HashMap<String, TreeTokenType>()
+
+    // exit condition
+    if (ast.head.token == TreeTokenType.VAR_INIT) {
+        map[ast.children[0].head.value] = ast.children[1].head.token
+        return map
+    }
+
+    for (i in 0 until ast.children.size) {
+        map += getLocalVars(ast.children[i])
+    }
+    return map
 }
 
 // Return a container with all global variables
