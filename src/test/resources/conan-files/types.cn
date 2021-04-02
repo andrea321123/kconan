@@ -4,3 +4,16 @@ var b: i32 = 32+1+1+1+1+1;
 var c: f32 = 3.14 + 4.0;
 
 var d: i32 = 3.14 > 6.28;
+
+fun f1(a1: i32): i32 {
+    a1 = 43 + a;
+    var b1: i32 = a1 - b;
+    var c1: f32 = c - 43.0;
+
+    if (c1 > 3.14) {
+        var a1: i32 = b1 / 43;
+        return a1;
+    }
+
+    return 43 + a;
+}

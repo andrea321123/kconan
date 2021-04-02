@@ -1,5 +1,5 @@
 // TypeResolution.kt
-// Version 1.0.1
+// Version 1.0.2
 package kconan.semantic
 
 import kconan.error.Error
@@ -24,7 +24,24 @@ fun typeResolution(tables: SymbolTables) {
             value.head.line, value.head.column)
     }
 
-    // TODO: check functions return types and function variables type
+    // check functions return types and function variables type
+    for ((_, value) in tables.functions) {
+        val expectedType = value.children[2].head.token
+        val parameters = value.children[1]
+
+        // add parameters to the scopeMap
+        scopeMap.push()
+        for (i in 0 until parameters.children.size) {
+            scopeMap.add(parameters.children[i].children[0].head.value,
+                parameters.children[i].children[1].head.token)
+        }
+
+        for (i in 3 until value.children.size) {
+            checkReturnType(value.children[i], scopeMap, expectedType)
+        }
+
+        scopeMap.pop()
+    }
 }
 
 // Return the type of an expression and check
@@ -73,6 +90,73 @@ fun getType(exp: Ast, map: ScopeMap<TreeTokenType>): TreeTokenType {
     }
 
     return exp.head.token
+}
+
+// Check the if the return type of the function is satisfied by every "return" statement.
+// It also check the type of each expression in the function
+fun checkReturnType(ast: Ast,
+                    map: ScopeMap<TreeTokenType>,
+                    expectedType: TreeTokenType) {
+    // var init
+    if (ast.head.token == TreeTokenType.VAR_INIT) {
+        val varType = ast.children[1].head.token
+        val actualType = getType(ast.children[2], map)
+        checkSameType(varType, actualType,
+            ast.head.line, ast.head.column)
+        map.add(ast.children[0].head.value, ast.children[1].head.token)
+    }
+    // var assign
+    else if (ast.head.token == TreeTokenType.VAR_ASSIGN) {
+        val varType = map.get(ast.children[0].head.value)!!
+        val actualType = getType(ast.children[1], map)
+        checkSameType(varType, actualType,
+            ast.head.line, ast.head.column)
+    }
+    // return
+    else if (ast.head.token == TreeTokenType.RETURN) {
+        checkSameType(expectedType, getType(ast.children[0], map),
+            ast.head.line, ast.head.column)
+    }
+    // if
+    else if (ast.head.token == TreeTokenType.IF) {
+        checkSameType(TreeTokenType.I32_TYPE, getType(ast.children[0], map),
+            ast.head.line, ast.head.column)
+
+        val ifBody = ast.children[1]
+        map.push()
+        for (i in 0 until ifBody.children.size) {
+            checkReturnType(ifBody.children[i], map, expectedType)
+        }
+        map.pop()
+
+        // eventually check the else
+        if (ast.children.size == 3) {
+            val elseBody = ast.children[2]
+            map.push()
+            for (i in 0 until elseBody.children.size) {
+                checkReturnType(elseBody.children[i], map, expectedType)
+            }
+            map.pop()
+        }
+    }
+    // while
+    else if (ast.head.token == TreeTokenType.WHILE) {
+        checkSameType(TreeTokenType.I32_TYPE, getType(ast.children[0], map),
+            ast.head.line, ast.head.column)
+
+        val body = ast.children[1]
+        map.push()
+        for (i in 0 until body.children.size) {
+            checkReturnType(body.children[i], map, expectedType)
+        }
+        map.pop()
+    }
+    // TODO: check function calls
+    else {
+        for (i in 0 until ast.children.size) {
+            checkReturnType(ast.children[i], map, expectedType)
+        }
+    }
 }
 
 private fun checkSameType(type1: TreeTokenType,
