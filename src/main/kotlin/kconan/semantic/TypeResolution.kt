@@ -5,6 +5,7 @@ package kconan.semantic
 import kconan.error.Error
 import kconan.error.ErrorType
 import kconan.parser.Ast
+import kconan.parser.grammar.expression.cOperators
 import kconan.parser.token.TreeTokenType
 import kconan.util.ScopeMap
 
@@ -63,7 +64,11 @@ fun getType(exp: Ast, map: ScopeMap<TreeTokenType>): TreeTokenType {
 
         checkSameType(type1, type2, exp.head.line, exp.head.column)
 
-        // TODO: Comparison operators (==, >= ...) should return i32
+        // Comparison operators (==, >= ...) return i32
+        if (cOperators.contains(exp.head.token)) {
+            return TreeTokenType.I32_TYPE
+        }
+
         return type1
     }
 
