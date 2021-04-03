@@ -1,9 +1,12 @@
 // TypeResolution.kt
-// Version 1.0.3
+// Version 1.0.4
 package kconan.semantic
 
 import kconan.error.Error
 import kconan.error.ErrorType
+import kconan.interpreter.defaultFunctionParameters
+import kconan.interpreter.defaultFunctionReturnType
+import kconan.interpreter.defaultFunctionSet
 import kconan.parser.Ast
 import kconan.parser.grammar.expression.cOperators
 import kconan.parser.token.TreeTokenType
@@ -71,6 +74,21 @@ fun getType(exp: Ast, map: ScopeMap<TreeTokenType>, tables: SymbolTables): TreeT
             )
     }
 
+    // default functions
+    if (exp.head.token == TreeTokenType.FUNCTION_CALL &&
+            defaultFunctionSet.contains(exp.children[0].head.value)) {
+        val functionName = exp.children[0].head.value
+
+        // check that each argument have same type of the parameter
+        for (i in 1 until exp.children.size) {
+            val actualType = getType(exp.children[i], map, tables)
+            val expectedType = defaultFunctionParameters[functionName]!![i -1]
+            checkSameType(expectedType, actualType,
+                exp.head.line, exp.head.column)
+        }
+
+        return defaultFunctionReturnType[functionName]!!
+    }
     // function calls
     if (exp.head.token == TreeTokenType.FUNCTION_CALL) {
         val functionName = exp.children[0].head.value

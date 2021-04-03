@@ -1,7 +1,9 @@
 // DefaultFunctions.kt
-// Version 1.0.2
+// Version 1.0.3
 
 package kconan.interpreter
+
+import kconan.parser.token.TreeTokenType
 
 val defaultFunctionSet = setOf(
     "print",
@@ -14,6 +16,22 @@ val defaultFunctionsArguments = mapOf(
     "print" to 1,
     "println" to 1,
     "input" to 0
+)
+
+val defaultFunctionParameters = mapOf(
+    "print" to listOf(
+        TreeTokenType.I32_TYPE
+    ),
+    "println" to listOf(
+        TreeTokenType.I32_TYPE
+    ),
+    "input" to listOf()
+)
+
+val defaultFunctionReturnType = mapOf(
+    "print" to TreeTokenType.I32_TYPE,
+    "println" to TreeTokenType.I32_TYPE,
+    "input" to TreeTokenType.I32_TYPE
 )
 
 // run the function
